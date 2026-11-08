@@ -1,241 +1,356 @@
-import { useState } from 'react';
 import { 
   Bot, 
   Sparkles, 
-  GraduationCap, 
   CheckCircle2, 
-  Layers, 
-  FileText, 
-  CreditCard, 
   Calendar, 
+  CreditCard, 
+  FileText, 
+  GraduationCap, 
   HelpCircle,
-  X
+  ArrowRight,
+  TrendingUp,
+  Clock,
+  MapPin,
+  AlertCircle
 } from 'lucide-react';
+import { AppShell } from '@/components/layout/AppShell';
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
+import { Badge } from '@/components/ui/Badge';
+import { Button } from '@/components/ui/Button';
+import { AGENT_REGISTRY, AgentId } from '@/types/agent';
 
 export default function App() {
-  const [drawerOpen, setDrawerOpen] = useState(false);
-
-  const agents = [
-    { name: 'Coordinator', role: 'Central Intent Router', color: '#8B5CF6', icon: Bot },
-    { name: 'Attendance Agent', role: 'Roll & Criteria', color: '#10B981', icon: CheckCircle2 },
-    { name: 'Fee Agent', role: 'Dues & Receipts', color: '#F59E0B', icon: CreditCard },
-    { name: 'Exam Agent', role: 'Schedules & GPA', color: '#06B6D4', icon: GraduationCap },
-    { name: 'Timetable Agent', role: 'Lectures & Rooms', color: '#A855F7', icon: Calendar },
-    { name: 'Assignment Agent', role: 'Deadlines & Submissions', color: '#F43F5E', icon: FileText },
-    { name: 'Support Agent', role: 'Campus FAQ & Policies', color: '#38BDF8', icon: HelpCircle },
-  ];
+  const agentIcons: Record<string, any> = {
+    Bot,
+    CheckCircle2,
+    CreditCard,
+    GraduationCap,
+    Calendar,
+    FileText,
+    HelpCircle,
+  };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] flex flex-col font-sans">
-      {/* Top Navigation */}
-      <header className="h-16 border-b border-slate-200 bg-white/90 backdrop-blur sticky top-0 z-30 flex items-center justify-between px-6 shadow-xs">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-[#1E3A8A] flex items-center justify-center text-white shadow-sm">
-            <GraduationCap className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="font-bold text-slate-900 tracking-tight text-base">Smart Campus AI</span>
-              <span className="text-[11px] font-bold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full">Enterprise</span>
-            </div>
-            <p className="text-xs text-slate-500">Multi-Agent Management Assistant</p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-3">
-          <button 
-            onClick={() => setDrawerOpen(true)}
-            className="flex items-center gap-2 px-3.5 py-2 rounded-lg bg-[#1E3A8A] hover:bg-[#172554] text-white text-xs font-semibold shadow-sm transition-all cursor-pointer"
-          >
-            <Sparkles className="w-4 h-4 text-blue-200" />
-            <span>Open AI Copilot</span>
-            <kbd className="ml-1 text-[10px] bg-blue-900/60 px-1.5 py-0.5 rounded border border-blue-400/30 font-mono">Ctrl+K</kbd>
-          </button>
-        </div>
-      </header>
-
-      {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-6 md:p-8 space-y-8">
-        {/* Welcome Banner */}
-        <section className="bg-gradient-to-r from-[#1E3A8A] via-[#1D4ED8] to-[#2563EB] rounded-2xl p-6 md:p-8 text-white shadow-md relative overflow-hidden">
-          <div className="max-w-2xl relative z-10 space-y-3">
-            <span className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 border border-white/20 text-xs font-medium backdrop-blur">
+    <AppShell>
+      <div className="space-y-6 sm:space-y-8 animate-in fade-in duration-300">
+        {/* Welcome Executive Hero Banner */}
+        <div className="relative rounded-2xl bg-gradient-to-r from-[#1E3A8A] via-[#1D4ED8] to-[#2563EB] p-6 sm:p-8 text-white shadow-soft-md overflow-hidden">
+          <div className="absolute -right-12 -top-12 w-64 h-64 bg-white/10 rounded-full blur-2xl pointer-events-none" />
+          
+          <div className="relative z-10 max-w-2xl space-y-3">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 border border-white/20 text-xs font-semibold backdrop-blur-xs">
               <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-              All 7 Multi-Agent Nodes Synchronized
-            </span>
-            <h1 className="text-2xl md:text-3xl font-extrabold tracking-tight">
-              Smart Campus AI Workspace
+              All 7 Specialized Multi-Agent Systems Online
+            </div>
+
+            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+              Welcome back, Alex!
             </h1>
-            <p className="text-blue-100 text-sm md:text-base leading-relaxed">
-              Stripe Royal Slate Enterprise Edition. Powered by LangGraph, Gemini API, and React 18 with dedicated multi-agent routing.
+            
+            <p className="text-blue-100 text-xs sm:text-sm leading-relaxed">
+              Your academic assistant has analyzed your records. Attendance is safely above the 75% threshold, semester fee clearances are verified, and you have 3 classes scheduled today.
             </p>
-          </div>
-        </section>
 
-        {/* Dashboard Quick Stats */}
-        <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-xs">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-medium uppercase tracking-wider">
-              <span>Attendance Rate</span>
-              <span className="w-2 h-2 rounded-full bg-emerald-500"></span>
-            </div>
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-2xl font-black text-slate-900 font-mono">84.5%</span>
-              <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">Safe Cutoff</span>
-            </div>
-            <div className="w-full bg-slate-100 h-1.5 rounded-full mt-3 overflow-hidden">
-              <div className="bg-emerald-500 h-full rounded-full" style={{ width: '84.5%' }}></div>
+            <div className="pt-2 flex flex-wrap gap-2.5">
+              <span className="text-[11px] font-mono bg-blue-900/60 px-2.5 py-1 rounded-lg border border-blue-400/30 flex items-center gap-1.5">
+                <TrendingUp className="w-3.5 h-3.5 text-emerald-400" />
+                GPA: 3.84 / 4.0
+              </span>
+              <span className="text-[11px] font-mono bg-blue-900/60 px-2.5 py-1 rounded-lg border border-blue-400/30 flex items-center gap-1.5">
+                <Clock className="w-3.5 h-3.5 text-blue-300" />
+                Next: CS301 at 10:00 AM
+              </span>
             </div>
           </div>
+        </div>
 
-          <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-xs">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-medium uppercase tracking-wider">
-              <span>Semester Balance</span>
-              <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-            </div>
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-2xl font-black text-slate-900 font-mono">₹0.00</span>
-              <span className="text-[11px] font-bold text-blue-700 bg-blue-50 border border-blue-200 px-1.5 py-0.5 rounded">Paid</span>
-            </div>
-            <p className="text-xs text-slate-400 mt-3 font-mono">No dues outstanding</p>
-          </div>
+        {/* Top 4 KPI Metrics */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Attendance KPI */}
+          <Card className="hover:border-slate-300 hover:shadow-soft-sm transition">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                Attendance Rate
+              </span>
+              <Badge variant="agent" agentId="attendance" withDot>
+                Safe
+              </Badge>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-black font-mono text-slate-900">84.5%</span>
+                <span className="text-xs text-emerald-700 font-bold bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+                  +9.5% margin
+                </span>
+              </div>
+              <div className="w-full bg-slate-100 h-2 rounded-full overflow-hidden">
+                <div className="bg-emerald-500 h-full rounded-full" style={{ width: '84.5%' }} />
+              </div>
+              <div className="flex justify-between text-[11px] text-slate-400 font-mono pt-1">
+                <span>Threshold: 75%</span>
+                <span>28/33 Classes</span>
+              </div>
+            </CardContent>
+          </Card>
 
-          <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-xs">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-medium uppercase tracking-wider">
-              <span>Next Lecture</span>
-              <span className="w-2 h-2 rounded-full bg-purple-500"></span>
-            </div>
-            <div className="mt-2">
-              <div className="font-bold text-slate-900 text-sm truncate">CS301: Distributed Systems</div>
-              <p className="text-xs text-slate-500">Hall 302 · Prof. R. Sharma</p>
-            </div>
-            <p className="text-xs font-mono font-bold text-purple-700 mt-2">Today at 10:00 AM</p>
-          </div>
+          {/* Fee Balance KPI */}
+          <Card className="hover:border-slate-300 hover:shadow-soft-sm transition">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                Semester Dues
+              </span>
+              <Badge variant="agent" agentId="fee" withDot>
+                Settled
+              </Badge>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="flex items-baseline gap-2">
+                <span className="text-3xl font-black font-mono text-slate-900">₹0.00</span>
+                <span className="text-xs text-blue-700 font-bold bg-blue-50 px-1.5 py-0.5 rounded border border-blue-200">
+                  Fall '26
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 pt-1">All tuition & lab fees cleared.</p>
+              <div className="text-[11px] font-mono text-slate-400 pt-1">
+                Receipt #RCP-2026-9041
+              </div>
+            </CardContent>
+          </Card>
 
-          <div className="bg-white border border-slate-200 p-4 rounded-xl shadow-xs">
-            <div className="flex items-center justify-between text-slate-500 text-xs font-medium uppercase tracking-wider">
-              <span>Pending Tasks</span>
-              <span className="w-2 h-2 rounded-full bg-rose-500"></span>
-            </div>
-            <div className="flex items-baseline gap-2 mt-2">
-              <span className="text-2xl font-black text-slate-900 font-mono">1 Task</span>
-              <span className="text-[11px] font-bold text-rose-700 bg-rose-50 border border-rose-200 px-1.5 py-0.5 rounded">Due Friday</span>
-            </div>
-            <p className="text-xs text-slate-400 mt-3 truncate">Lab 4: Raft Consensus</p>
-          </div>
-        </section>
+          {/* Next Lecture KPI */}
+          <Card className="hover:border-slate-300 hover:shadow-soft-sm transition">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                Next Session
+              </span>
+              <Badge variant="agent" agentId="timetable" withDot>
+                In 45 mins
+              </Badge>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="font-bold text-slate-900 text-sm truncate">
+                CS301: Distributed Systems
+              </div>
+              <div className="flex items-center gap-1.5 text-xs text-slate-500">
+                <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                <span>Lecture Hall 302 · Prof. R. Sharma</span>
+              </div>
+              <div className="text-[11px] font-mono text-purple-700 font-bold pt-1">
+                10:00 AM – 11:30 AM
+              </div>
+            </CardContent>
+          </Card>
 
-        {/* Multi-Agent Fleet Status */}
-        <section className="space-y-4">
+          {/* Pending Tasks KPI */}
+          <Card className="hover:border-slate-300 hover:shadow-soft-sm transition">
+            <CardHeader className="flex flex-row items-center justify-between pb-2">
+              <span className="text-xs font-bold uppercase tracking-wider text-slate-500">
+                Assignments
+              </span>
+              <Badge variant="agent" agentId="assignment" withDot>
+                1 Pending
+              </Badge>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="font-bold text-slate-900 text-sm truncate">
+                Lab 4: Raft Consensus Engine
+              </div>
+              <div className="flex items-center gap-1.5 text-xs text-rose-600 font-semibold">
+                <AlertCircle className="w-3.5 h-3.5 text-rose-500" />
+                <span>Due in 2 days (Friday, 11:59 PM)</span>
+              </div>
+              <div className="text-[11px] font-mono text-slate-400 pt-1">
+                Weight: 15% of final grade
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Schedule & Academic Focus Split Grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {/* Today's Lectures Timeline */}
+          <Card className="lg:col-span-2">
+            <CardHeader className="flex flex-row items-center justify-between pb-3">
+              <div>
+                <CardTitle className="flex items-center gap-2">
+                  <Calendar className="w-4 h-4 text-[#1E3A8A]" />
+                  Today's Class Schedule
+                </CardTitle>
+                <CardDescription>Wednesday, November 8, 2026</CardDescription>
+              </div>
+              <Badge variant="default" className="font-mono">
+                3 Lectures
+              </Badge>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              {/* Lecture 1 (Upcoming Active) */}
+              <div className="p-3.5 rounded-xl border border-blue-200 bg-blue-50/40 flex items-center justify-between shadow-2xs">
+                <div className="flex items-start gap-3">
+                  <div className="w-2.5 h-2.5 rounded-full bg-blue-600 mt-1.5 ring-4 ring-blue-100" />
+                  <div>
+                    <div className="font-bold text-slate-900 text-sm">
+                      CS301: Distributed Systems & Microservices
+                    </div>
+                    <div className="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
+                      <span>LH-302</span>
+                      <span>•</span>
+                      <span>Prof. R. Sharma</span>
+                      <span>•</span>
+                      <span className="text-blue-700 font-medium">Room Confirmed</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <span className="text-xs font-mono font-bold text-blue-900 bg-white px-2.5 py-1 rounded-md border border-blue-200 shadow-2xs">
+                    10:00 AM
+                  </span>
+                  <span className="text-[10px] text-slate-400 block mt-1">90 mins</span>
+                </div>
+              </div>
+
+              {/* Lecture 2 */}
+              <div className="p-3.5 rounded-xl border border-slate-200 bg-white flex items-center justify-between">
+                <div className="flex items-start gap-3">
+                  <div className="w-2.5 h-2.5 rounded-full bg-slate-300 mt-1.5" />
+                  <div>
+                    <div className="font-bold text-slate-900 text-sm">
+                      CS304: Database Internals & Query Optimization
+                    </div>
+                    <div className="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
+                      <span>Software Lab 2</span>
+                      <span>•</span>
+                      <span>Dr. A. Verma</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <span className="text-xs font-mono font-bold text-slate-700 bg-slate-50 px-2.5 py-1 rounded-md border border-slate-200">
+                    01:30 PM
+                  </span>
+                  <span className="text-[10px] text-slate-400 block mt-1">120 mins</span>
+                </div>
+              </div>
+
+              {/* Lecture 3 */}
+              <div className="p-3.5 rounded-xl border border-slate-200 bg-white flex items-center justify-between">
+                <div className="flex items-start gap-3">
+                  <div className="w-2.5 h-2.5 rounded-full bg-slate-300 mt-1.5" />
+                  <div>
+                    <div className="font-bold text-slate-900 text-sm">
+                      CS308: Software Engineering & DevOps Architecture
+                    </div>
+                    <div className="text-xs text-slate-500 flex items-center gap-2 mt-0.5">
+                      <span>Seminar Hall B</span>
+                      <span>•</span>
+                      <span>Prof. K. Iyer</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <span className="text-xs font-mono font-bold text-slate-700 bg-slate-50 px-2.5 py-1 rounded-md border border-slate-200">
+                    03:30 PM
+                  </span>
+                  <span className="text-[10px] text-slate-400 block mt-1">60 mins</span>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Quick AI Action Card */}
+          <Card className="flex flex-col justify-between bg-gradient-to-br from-white via-slate-50/50 to-blue-50/20">
+            <CardHeader>
+              <div className="w-9 h-9 rounded-xl bg-violet-50 text-violet-700 border border-violet-200 flex items-center justify-center mb-1">
+                <Sparkles className="w-5 h-5 text-violet-600" />
+              </div>
+              <CardTitle>Ask Central AI</CardTitle>
+              <CardDescription>
+                Natural language query routing across all college systems.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              <div className="p-2.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-600 flex items-center justify-between">
+                <span>"Can I miss tomorrow's 10 AM class?"</span>
+                <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+              </div>
+              <div className="p-2.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-600 flex items-center justify-between">
+                <span>"Download paid fee receipt for semester 5"</span>
+                <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+              </div>
+              <div className="p-2.5 rounded-xl bg-white border border-slate-200 text-xs text-slate-600 flex items-center justify-between">
+                <span>"When do midterm hall tickets release?"</span>
+                <ArrowRight className="w-3.5 h-3.5 text-slate-400" />
+              </div>
+            </CardContent>
+            <div className="p-5 pt-0">
+              <Button 
+                variant="primary" 
+                size="sm" 
+                className="w-full bg-[#1E3A8A] hover:bg-[#172554]"
+                onClick={() => {
+                  const event = new KeyboardEvent('keydown', { key: 'j', ctrlKey: true });
+                  window.dispatchEvent(event);
+                }}
+              >
+                Launch AI Copilot Drawer (Ctrl+J)
+              </Button>
+            </div>
+          </Card>
+        </div>
+
+        {/* Multi-Agent Ecosystem Registry Grid */}
+        <div className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-bold text-slate-900 flex items-center gap-2">
-              <Layers className="w-4 h-4 text-[#1E3A8A]" />
-              Specialized Agent Status & Registry
-            </h2>
-            <span className="text-xs text-slate-500">7 Active Nodes</span>
+            <div>
+              <h2 className="text-base font-bold text-slate-900 tracking-tight">
+                Multi-Agent System Fleet
+              </h2>
+              <p className="text-xs text-slate-500">
+                Specialized domain agents coordinated under Central Orchestrator architecture
+              </p>
+            </div>
+            <Badge variant="success" withDot>
+              All Operational
+            </Badge>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {agents.map((agent) => {
-              const Icon = agent.icon;
+            {Object.values(AGENT_REGISTRY).map((agent) => {
+              const Icon = agentIcons[agent.iconName] || Bot;
               return (
-                <div 
-                  key={agent.name}
-                  className="bg-white border border-slate-200 p-4 rounded-xl shadow-xs hover:border-slate-300 transition-all flex flex-col justify-between"
+                <Card 
+                  key={agent.id}
+                  className="hover:border-slate-300 hover:shadow-soft-sm transition flex flex-col justify-between"
                 >
-                  <div className="flex items-start justify-between mb-3">
-                    <div 
-                      className="w-9 h-9 rounded-lg flex items-center justify-center" 
-                      style={{ backgroundColor: `${agent.color}15`, color: agent.color }}
-                    >
-                      <Icon className="w-5 h-5" />
+                  <CardHeader className="p-4 pb-2">
+                    <div className="flex items-start justify-between">
+                      <div 
+                        className="w-9 h-9 rounded-xl flex items-center justify-center shadow-2xs"
+                        style={{ backgroundColor: `${agent.color}15`, color: agent.color }}
+                      >
+                        <Icon className="w-4 h-4" />
+                      </div>
+                      <span 
+                        className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border"
+                        style={{ borderColor: `${agent.color}30`, backgroundColor: `${agent.color}10`, color: agent.color }}
+                      >
+                        Active
+                      </span>
                     </div>
-                    <span 
-                      className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border" 
-                      style={{ borderColor: `${agent.color}30`, backgroundColor: `${agent.color}10`, color: agent.color }}
-                    >
-                      Online
-                    </span>
+                    <CardTitle className="text-sm mt-3">{agent.name}</CardTitle>
+                    <CardDescription className="text-[11px] line-clamp-2">
+                      {agent.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <div className="p-4 pt-2 border-t border-slate-100 text-[10px] font-mono text-slate-400 flex items-center justify-between">
+                    <span>Role: {agent.shortName}</span>
+                    <span style={{ color: agent.color }}>● Online</span>
                   </div>
-                  <div>
-                    <h3 className="font-bold text-slate-900 text-sm">{agent.name}</h3>
-                    <p className="text-xs text-slate-500 mt-0.5">{agent.role}</p>
-                  </div>
-                </div>
+                </Card>
               );
             })}
           </div>
-        </section>
-      </main>
-
-      {/* Slide-Over AI Copilot Drawer */}
-      {drawerOpen && (
-        <div className="fixed inset-0 z-50 flex justify-end">
-          {/* Backdrop */}
-          <div 
-            className="fixed inset-0 bg-slate-900/40 backdrop-blur-xs transition-opacity" 
-            onClick={() => setDrawerOpen(false)}
-          />
-
-          {/* Drawer Panel */}
-          <aside className="relative w-full max-w-md bg-white h-full shadow-2xl border-l border-slate-200 flex flex-col z-10">
-            {/* Drawer Header */}
-            <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-slate-50">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#1E3A8A] flex items-center justify-center text-white">
-                  <Bot className="w-4 h-4" />
-                </div>
-                <div>
-                  <h3 className="text-sm font-bold text-slate-900">Campus AI Assistant</h3>
-                  <p className="text-[11px] text-slate-500 flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                    Central Coordinator Connected
-                  </p>
-                </div>
-              </div>
-              <button 
-                onClick={() => setDrawerOpen(false)}
-                className="w-7 h-7 rounded-md hover:bg-slate-200 text-slate-500 flex items-center justify-center transition cursor-pointer"
-              >
-                <X className="w-4 h-4" />
-              </button>
-            </div>
-
-            {/* Drawer Content */}
-            <div className="flex-1 p-4 overflow-y-auto space-y-4">
-              {/* Agent Routing Trace Mock */}
-              <div className="bg-slate-50 border border-slate-200 rounded-xl p-3 text-xs space-y-2">
-                <div className="flex items-center gap-1.5 text-blue-900 font-bold text-[11px]">
-                  <Sparkles className="w-3.5 h-3.5 text-blue-700" />
-                  Agent Execution Trace
-                </div>
-                <div className="font-mono text-[11px] text-slate-600 bg-white p-2 rounded border border-slate-200">
-                  Coordinator ➔ <span className="text-emerald-600 font-bold">AttendanceAgent</span> [18ms]
-                </div>
-              </div>
-
-              {/* Bot Response */}
-              <div className="bg-slate-50 border border-slate-200 p-3.5 rounded-xl text-xs text-slate-800 leading-relaxed shadow-xs">
-                Hello Alex! You are currently at <strong className="text-emerald-700">84.5%</strong> aggregate attendance. You have attended 28 out of 33 conducted classes across all subjects.
-              </div>
-            </div>
-
-            {/* Drawer Input */}
-            <div className="p-4 border-t border-slate-200 bg-white">
-              <div className="relative">
-                <input 
-                  type="text" 
-                  placeholder="Ask about attendance, dues, exams, timetable..." 
-                  className="w-full text-xs pl-3 pr-10 py-2.5 rounded-lg border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#1E3A8A] focus:border-transparent"
-                />
-                <button className="absolute right-1.5 top-1.5 w-7 h-7 rounded-md bg-[#1E3A8A] text-white flex items-center justify-center text-xs">
-                  ↵
-                </button>
-              </div>
-            </div>
-          </aside>
         </div>
-      )}
-    </div>
+      </div>
+    </AppShell>
   );
 }
