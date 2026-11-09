@@ -164,7 +164,7 @@ The frontend will run locally on `http://localhost:5173`.
 ## 🗺️ 10-Day Frontend Implementation Roadmap
 
 - [x] **Day 1:** Project foundation, Stripe Royal Slate design tokens & responsive AppShell with slide-over drawer
-- [ ] **Day 2:** Authentication, role-based views (Student/Faculty/Admin) & mock data engine
+- [x] **Day 2:** Authentication, role-based views (Student/Faculty/Admin) & mock data engine
 - [ ] **Day 3:** Student overview dashboard & Recharts attendance gauge
 - [ ] **Day 4:** Multi-agent chat shell & non-blocking streaming simulation
 - [ ] **Day 5:** Agent reasoning trace accordion & visual breadcrumbs
