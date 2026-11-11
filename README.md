@@ -166,7 +166,7 @@ The frontend will run locally on `http://localhost:5173`.
 - [x] **Day 1:** Project foundation, Stripe Royal Slate design tokens & responsive AppShell with slide-over drawer
 - [x] **Day 2:** Authentication, role-based views (Student/Faculty/Admin) & mock data engine
 - [x] **Day 3:** Student overview dashboard & Recharts attendance gauge
-- [ ] **Day 4:** Multi-agent chat shell & non-blocking streaming simulation
+- [x] **Day 4:** Multi-agent chat shell & non-blocking streaming simulation
 - [ ] **Day 5:** Agent reasoning trace accordion & visual breadcrumbs
 - [ ] **Day 6:** Generative UI engine (Dynamic attendance, timetable, fee widgets in chat)
 - [ ] **Day 7:** Faculty portal & academic records management
