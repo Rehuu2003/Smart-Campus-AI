@@ -10,7 +10,8 @@ import {
   Settings, 
   ChevronLeft, 
   ChevronRight,
-  Sparkles
+  Sparkles,
+  Bot
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Tooltip } from '@/components/ui/Tooltip';
@@ -27,6 +28,7 @@ export function Sidebar({ activeTab, onTabChange, onOpenCopilot }: SidebarProps)
 
   const navItems = [
     { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+    { id: 'assistant', label: 'AI Copilot View', icon: Bot, badge: 'Full' },
     { id: 'attendance', label: 'Attendance', icon: CheckCircle2, badge: '84.5%' },
     { id: 'timetable', label: 'Timetable', icon: Calendar, badge: '3 Today' },
     { id: 'fees', label: 'Fee Ledger', icon: CreditCard },
@@ -71,7 +73,9 @@ export function Sidebar({ activeTab, onTabChange, onOpenCopilot }: SidebarProps)
                         "text-[10px] font-mono px-1.5 py-0.2 rounded border font-bold",
                         isActive 
                           ? "bg-blue-900/60 text-blue-200 border-blue-400/30" 
-                          : "bg-slate-100 text-slate-600 border-slate-200"
+                          : item.id === 'assistant' 
+                            ? "bg-violet-50 text-violet-700 border-violet-200" 
+                            : "bg-slate-100 text-slate-600 border-slate-200"
                       )}
                     >
                       {item.badge}
@@ -121,12 +125,15 @@ export function Sidebar({ activeTab, onTabChange, onOpenCopilot }: SidebarProps)
               onClick={onOpenCopilot}
               className="w-full text-center text-[11px] text-blue-700 font-bold hover:underline block pt-1"
             >
-              Ask AI Assistant →
+              Open AI Drawer →
             </button>
           </div>
         ) : (
           <Tooltip content="7 Agents Online" position="right">
-            <div className="w-10 h-10 mx-auto rounded-lg bg-blue-50 border border-blue-200 flex items-center justify-center text-[#1E3A8A] cursor-pointer hover:bg-blue-100 transition">
+            <div 
+              onClick={onOpenCopilot}
+              className="w-10 h-10 mx-auto rounded-lg bg-blue-50 border border-blue-200 flex items-center justify-center text-[#1E3A8A] cursor-pointer hover:bg-blue-100 transition"
+            >
               <Sparkles className="w-4 h-4" />
             </div>
           </Tooltip>

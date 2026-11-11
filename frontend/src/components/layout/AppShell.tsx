@@ -2,7 +2,9 @@ import { useState, ReactNode } from 'react';
 import { Navbar } from './Navbar';
 import { Sidebar } from './Sidebar';
 import { SlideOverDrawer } from '@/components/chat/SlideOverDrawer';
+import { FullScreenAssistant } from '@/components/chat/FullScreenAssistant';
 import { CommandMenu } from '@/components/search/CommandMenu';
+import { useChatStream } from '@/hooks/useChatStream';
 
 interface AppShellProps {
   children?: ReactNode;
@@ -12,10 +14,11 @@ export function AppShell({ children }: AppShellProps) {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isCopilotOpen, setIsCopilotOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const { streamResponse } = useChatStream();
 
   const handleCommandSelect = (query: string) => {
     setIsCopilotOpen(true);
-    // query is passed into the copilot drawer
+    streamResponse(query);
   };
 
   return (
@@ -38,7 +41,11 @@ export function AppShell({ children }: AppShellProps) {
         {/* Dynamic Page Content */}
         <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#F8FAFC]">
           <div className="max-w-7xl mx-auto">
-            {children}
+            {activeTab === 'assistant' ? (
+              <FullScreenAssistant onBackToDashboard={() => setActiveTab('dashboard')} />
+            ) : (
+              children
+            )}
           </div>
         </main>
       </div>
@@ -47,6 +54,10 @@ export function AppShell({ children }: AppShellProps) {
       <SlideOverDrawer
         isOpen={isCopilotOpen}
         onClose={() => setIsCopilotOpen(false)}
+        onExpandFullScreen={() => {
+          setIsCopilotOpen(false);
+          setActiveTab('assistant');
+        }}
       />
 
       {/* Global Command Menu (Ctrl+K) */}
