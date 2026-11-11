@@ -5,12 +5,12 @@ import {
   Search, 
   Sparkles, 
   LogOut, 
-  UserCheck, 
   ChevronDown,
   Shield,
   BookOpen,
   Users,
-  Building2
+  Building2,
+  Menu
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
@@ -21,9 +21,10 @@ import { UserRole } from '@/types/auth';
 interface NavbarProps {
   onOpenCopilot: () => void;
   onOpenSearch: () => void;
+  onToggleMobileMenu?: () => void;
 }
 
-export function Navbar({ onOpenCopilot, onOpenSearch }: NavbarProps) {
+export function Navbar({ onOpenCopilot, onOpenSearch, onToggleMobileMenu }: NavbarProps) {
   const { user, switchRole, logout } = useAuthStore();
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -57,15 +58,27 @@ export function Navbar({ onOpenCopilot, onOpenSearch }: NavbarProps) {
   };
 
   return (
-    <header className="h-16 border-b border-slate-200/90 bg-white/95 backdrop-blur-md sticky top-0 z-30 flex items-center justify-between px-4 sm:px-6 shadow-soft-xs">
-      {/* Brand */}
-      <div className="flex items-center gap-3">
-        <div className="w-10 h-10 rounded-xl bg-[#1E3A8A] flex items-center justify-center text-white shadow-soft-xs">
+    <header className="h-16 border-b border-slate-200/90 bg-white/95 backdrop-blur-md sticky top-0 z-30 flex items-center justify-between px-3 sm:px-6 shadow-soft-xs">
+      {/* Brand & Mobile Hamburger Toggle */}
+      <div className="flex items-center gap-2 sm:gap-3">
+        {/* Mobile Hamburger Button */}
+        {onToggleMobileMenu && (
+          <button
+            onClick={onToggleMobileMenu}
+            className="md:hidden w-9 h-9 rounded-lg border border-slate-200 hover:bg-slate-100 text-slate-700 flex items-center justify-center transition cursor-pointer"
+            title="Open navigation menu"
+          >
+            <Menu className="w-5 h-5" />
+          </button>
+        )}
+
+        {/* Logo */}
+        <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-[#1E3A8A] flex items-center justify-center text-white shadow-soft-xs shrink-0">
           <GraduationCap className="w-5 h-5" />
         </div>
         <div>
           <div className="flex items-center gap-2">
-            <span className="font-extrabold text-slate-900 tracking-tight text-base sm:text-lg">
+            <span className="font-extrabold text-slate-900 tracking-tight text-sm sm:text-lg">
               Smart Campus AI
             </span>
             <span className="hidden sm:inline-flex text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full">
@@ -93,11 +106,12 @@ export function Navbar({ onOpenCopilot, onOpenSearch }: NavbarProps) {
       </div>
 
       {/* Action Controls & Interactive Profile Menu */}
-      <div className="flex items-center gap-2.5 sm:gap-3">
+      <div className="flex items-center gap-2 sm:gap-3">
         {/* Mobile Search Button */}
         <button
           onClick={onOpenSearch}
-          className="md:hidden w-9 h-9 rounded-lg border border-slate-200 text-slate-600 flex items-center justify-center hover:bg-slate-100 transition"
+          className="md:hidden w-8 h-8 rounded-lg border border-slate-200 text-slate-600 flex items-center justify-center hover:bg-slate-100 transition"
+          title="Search"
         >
           <Search className="w-4 h-4" />
         </button>
@@ -107,11 +121,11 @@ export function Navbar({ onOpenCopilot, onOpenSearch }: NavbarProps) {
           onClick={onOpenCopilot}
           variant="primary"
           size="sm"
-          className="shadow-soft-xs bg-[#1E3A8A] hover:bg-[#172554]"
+          className="shadow-soft-xs bg-[#1E3A8A] hover:bg-[#172554] text-xs px-2.5 sm:px-3 py-1.5"
         >
           <Sparkles className="w-3.5 h-3.5 text-blue-200 animate-pulse" />
           <span className="hidden sm:inline">AI Copilot</span>
-          <span className="sm:hidden">AI</span>
+          <span className="sm:hidden text-xs">Copilot</span>
           <kbd className="hidden lg:inline-block ml-1 text-[10px] bg-blue-900/60 px-1.5 py-0.5 rounded border border-blue-400/30 font-mono">
             Ctrl+J
           </kbd>
@@ -119,11 +133,11 @@ export function Navbar({ onOpenCopilot, onOpenSearch }: NavbarProps) {
 
         {/* Notifications Button */}
         <button 
-          className="relative w-9 h-9 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 flex items-center justify-center transition cursor-pointer"
+          className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 flex items-center justify-center transition cursor-pointer"
           title="Notifications"
         >
           <Bell className="w-4 h-4" />
-          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white"></span>
+          <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-rose-500 ring-2 ring-white" />
         </button>
 
         <div className="h-6 w-[1px] bg-slate-200 hidden sm:block" />
@@ -133,7 +147,7 @@ export function Navbar({ onOpenCopilot, onOpenSearch }: NavbarProps) {
           <div className="relative" ref={menuRef}>
             <button
               onClick={() => setProfileMenuOpen(!profileMenuOpen)}
-              className="flex items-center gap-2.5 p-1 rounded-xl hover:bg-slate-100 transition cursor-pointer text-left select-none"
+              className="flex items-center gap-2 p-1 rounded-xl hover:bg-slate-100 transition cursor-pointer text-left select-none"
             >
               <Avatar 
                 fallback={user.name.split(' ').map(n => n[0]).join('')} 

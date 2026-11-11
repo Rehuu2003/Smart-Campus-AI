@@ -1,6 +1,7 @@
 import { useState, ReactNode } from 'react';
 import { Navbar } from './Navbar';
 import { Sidebar } from './Sidebar';
+import { MobileNavDrawer } from './MobileNavDrawer';
 import { SlideOverDrawer } from '@/components/chat/SlideOverDrawer';
 import { FullScreenAssistant } from '@/components/chat/FullScreenAssistant';
 import { CommandMenu } from '@/components/search/CommandMenu';
@@ -14,6 +15,7 @@ export function AppShell({ children }: AppShellProps) {
   const [activeTab, setActiveTab] = useState('dashboard');
   const [isCopilotOpen, setIsCopilotOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const { streamResponse } = useChatStream();
 
   const handleCommandSelect = (query: string) => {
@@ -27,11 +29,12 @@ export function AppShell({ children }: AppShellProps) {
       <Navbar
         onOpenCopilot={() => setIsCopilotOpen(true)}
         onOpenSearch={() => setIsSearchOpen(true)}
+        onToggleMobileMenu={() => setIsMobileNavOpen(true)}
       />
 
       {/* Main Body with Sidebar */}
       <div className="flex-1 flex overflow-hidden">
-        {/* Left Sidebar */}
+        {/* Left Desktop Sidebar (Hidden on mobile) */}
         <Sidebar
           activeTab={activeTab}
           onTabChange={setActiveTab}
@@ -39,7 +42,7 @@ export function AppShell({ children }: AppShellProps) {
         />
 
         {/* Dynamic Page Content */}
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8 bg-[#F8FAFC]">
+        <main className="flex-1 overflow-y-auto p-3 sm:p-6 lg:p-8 bg-[#F8FAFC]">
           <div className="max-w-7xl mx-auto">
             {activeTab === 'assistant' ? (
               <FullScreenAssistant onBackToDashboard={() => setActiveTab('dashboard')} />
@@ -49,6 +52,21 @@ export function AppShell({ children }: AppShellProps) {
           </div>
         </main>
       </div>
+
+      {/* Mobile Slide-out Navigation Drawer (Mobile Only) */}
+      <MobileNavDrawer
+        isOpen={isMobileNavOpen}
+        onClose={() => setIsMobileNavOpen(false)}
+        activeTab={activeTab}
+        onSelectTab={(tab) => {
+          setActiveTab(tab);
+          setIsMobileNavOpen(false);
+        }}
+        onOpenCopilot={() => {
+          setIsMobileNavOpen(false);
+          setIsCopilotOpen(true);
+        }}
+      />
 
       {/* Slide-over AI Copilot Drawer */}
       <SlideOverDrawer

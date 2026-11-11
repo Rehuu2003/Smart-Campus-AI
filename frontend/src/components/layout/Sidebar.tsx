@@ -41,7 +41,7 @@ export function Sidebar({ activeTab, onTabChange, onOpenCopilot }: SidebarProps)
   return (
     <aside
       className={cn(
-        "h-[calc(100vh-4rem)] border-r border-slate-200/90 bg-white select-none transition-all duration-300 flex flex-col justify-between shrink-0 shadow-soft-xs",
+        "hidden md:flex flex-col justify-between h-[calc(100vh-4rem)] border-r border-slate-200/90 bg-white select-none transition-all duration-300 shrink-0 shadow-soft-xs",
         isCollapsed ? "w-18" : "w-64"
       )}
     >
