@@ -1,19 +1,15 @@
 import { useEffect } from 'react';
 import { 
   Bot, 
-  Sparkles, 
   RotateCcw, 
   ArrowLeft, 
-  ShieldCheck, 
-  Layers,
-  ChevronDown,
-  Info
+  ChevronDown
 } from 'lucide-react';
 import { useChatStream } from '@/hooks/useChatStream';
 import { useChatStore } from '@/stores/chatStore';
 import { ChatMessageItem } from './ChatMessageItem';
 import { ChatInput } from './ChatInput';
-import { AGENT_REGISTRY } from '@/types/agent';
+import { AgentLiveStatusTicker } from '@/components/agent/AgentLiveStatusTicker';
 import { Button } from '@/components/ui/Button';
 
 interface FullScreenAssistantProps {
@@ -104,6 +100,11 @@ export function FullScreenAssistant({ onBackToDashboard }: FullScreenAssistantPr
               onRegenerate={(txt) => streamResponse(`Re-evaluate: ${txt}`)}
             />
           ))}
+
+          {/* Live Multi-Agent Execution Status Ticker */}
+          {isStreaming && (
+            <AgentLiveStatusTicker isStreaming={isStreaming} />
+          )}
         </div>
 
         {/* Floating "Scroll to Bottom" indicator if user scrolled up */}

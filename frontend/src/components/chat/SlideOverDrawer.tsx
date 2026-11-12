@@ -12,6 +12,7 @@ import { useChatStream } from '@/hooks/useChatStream';
 import { useChatStore } from '@/stores/chatStore';
 import { ChatMessageItem } from './ChatMessageItem';
 import { ChatInput } from './ChatInput';
+import { AgentLiveStatusTicker } from '@/components/agent/AgentLiveStatusTicker';
 
 interface SlideOverDrawerProps {
   isOpen: boolean;
@@ -140,6 +141,11 @@ export function SlideOverDrawer({ isOpen, onClose, onExpandFullScreen }: SlideOv
                   onRegenerate={(txt) => streamResponse(`Clarify further: ${txt}`)}
                 />
               ))}
+
+              {/* Live Multi-Agent Execution Status Ticker */}
+              {isStreaming && (
+                <AgentLiveStatusTicker isStreaming={isStreaming} />
+              )}
 
               {/* Jump to bottom button */}
               {!isAtBottom && (
