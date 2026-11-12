@@ -19,24 +19,26 @@ import { AppShell } from '@/components/layout/AppShell';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
-import { AGENT_REGISTRY } from '@/types/agent';
+import { AGENT_REGISTRY, AgentId } from '@/types/agent';
 import { MOCK_STUDENT_DATA, MOCK_ADMIN_METRICS } from '@/lib/mockData';
 import { StatCard } from '@/components/dashboard/StatCard';
 import { AttendanceGauge } from '@/components/dashboard/AttendanceGauge';
 import { ScheduleTimeline } from '@/components/dashboard/ScheduleTimeline';
 import { PendingTasksList } from '@/components/dashboard/PendingTasksList';
+import { AgentIdentityCard } from '@/components/agent/AgentIdentityCard';
+import { useChatStream } from '@/hooks/useChatStream';
+import { toast } from 'sonner';
 
 export default function App() {
   const { user, isAuthenticated } = useAuthStore();
+  const { streamResponse } = useChatStream();
 
-  const agentIcons: Record<string, any> = {
-    Bot,
-    CheckCircle2,
-    CreditCard,
-    GraduationCap,
-    Calendar,
-    FileText,
-    HelpCircle,
+  const handleTestAgentPrompt = (prompt: string, agentName: string) => {
+    toast.info(`Routing inquiry to ${agentName}...`);
+    // Open copilot drawer by dispatching Ctrl+J or invoking stream
+    const event = new KeyboardEvent('keydown', { key: 'j', ctrlKey: true });
+    window.dispatchEvent(event);
+    streamResponse(prompt);
   };
 
   // If unauthenticated, display the LoginScreen
@@ -59,7 +61,7 @@ export default function App() {
               
               <div className="relative z-10 max-w-2xl space-y-3">
                 <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 border border-white/20 text-xs font-semibold backdrop-blur-xs">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
                   Active Student Portal · Coordinated Agent Fleet Synchronized
                 </div>
 
@@ -268,57 +270,30 @@ export default function App() {
           </div>
         )}
 
-        {/* Multi-Agent System Registry (Footer Section for all roles) */}
+        {/* Multi-Agent System Registry with Interactive AgentIdentityCards */}
         <div className="space-y-4 pt-4">
           <div className="flex items-center justify-between">
             <div>
               <h2 className="text-base font-bold text-slate-900 tracking-tight">
-                Multi-Agent System Fleet
+                Multi-Agent System Fleet &amp; Capabilities
               </h2>
               <p className="text-xs text-slate-500">
-                Specialized domain agents coordinated under Central Orchestrator architecture
+                Specialized domain agents with bound database tools, latency benchmarks, and live telemetry
               </p>
             </div>
             <Badge variant="success" withDot>
-              All Operational
+              All 7 Nodes Operational
             </Badge>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {Object.values(AGENT_REGISTRY).map((agent) => {
-              const Icon = agentIcons[agent.iconName] || Bot;
-              return (
-                <Card 
-                  key={agent.id}
-                  className="hover:border-slate-300 hover:shadow-soft-sm transition flex flex-col justify-between"
-                >
-                  <CardHeader className="p-4 pb-2">
-                    <div className="flex items-start justify-between">
-                      <div 
-                        className="w-9 h-9 rounded-xl flex items-center justify-center shadow-2xs"
-                        style={{ backgroundColor: `${agent.color}15`, color: agent.color }}
-                      >
-                        <Icon className="w-4 h-4" />
-                      </div>
-                      <span 
-                        className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border"
-                        style={{ borderColor: `${agent.color}30`, backgroundColor: `${agent.color}10`, color: agent.color }}
-                      >
-                        Active
-                      </span>
-                    </div>
-                    <CardTitle className="text-sm mt-3">{agent.name}</CardTitle>
-                    <CardDescription className="text-[11px] line-clamp-2">
-                      {agent.description}
-                    </CardDescription>
-                  </CardHeader>
-                  <div className="p-4 pt-2 border-t border-slate-100 text-[10px] font-mono text-slate-400 flex items-center justify-between">
-                    <span>Role: {agent.shortName}</span>
-                    <span style={{ color: agent.color }}>● Online</span>
-                  </div>
-                </Card>
-              );
-            })}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+            {Object.values(AGENT_REGISTRY).map((agent) => (
+              <AgentIdentityCard
+                key={agent.id}
+                agentId={agent.id}
+                onSelectPrompt={(prompt) => handleTestAgentPrompt(prompt, agent.name)}
+              />
+            ))}
           </div>
         </div>
 

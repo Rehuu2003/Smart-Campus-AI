@@ -1,4 +1,5 @@
 import { useState, ReactNode } from 'react';
+import { Toaster } from 'sonner';
 import { Navbar } from './Navbar';
 import { Sidebar } from './Sidebar';
 import { MobileNavDrawer } from './MobileNavDrawer';
@@ -25,6 +26,20 @@ export function AppShell({ children }: AppShellProps) {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex flex-col font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900">
+      {/* Sonner Toast Notification Provider */}
+      <Toaster 
+        richColors 
+        position="top-right" 
+        closeButton 
+        theme="light"
+        toastOptions={{
+          style: {
+            fontFamily: 'Plus Jakarta Sans, sans-serif',
+            fontSize: '12px',
+          },
+        }}
+      />
+
       {/* Top Navbar */}
       <Navbar
         onOpenCopilot={() => setIsCopilotOpen(true)}
