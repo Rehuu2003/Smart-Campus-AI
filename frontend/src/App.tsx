@@ -26,6 +26,7 @@ import { AttendanceGauge } from '@/components/dashboard/AttendanceGauge';
 import { ScheduleTimeline } from '@/components/dashboard/ScheduleTimeline';
 import { PendingTasksList } from '@/components/dashboard/PendingTasksList';
 import { AgentIdentityCard } from '@/components/agent/AgentIdentityCard';
+import { FacultyOverview } from '@/components/faculty/FacultyOverview';
 import { useChatStream } from '@/hooks/useChatStream';
 import { toast } from 'sonner';
 
@@ -146,61 +147,7 @@ export default function App() {
         {/* FACULTY ROLE VIEW                                             */}
         {/* ============================================================== */}
         {user.role === 'faculty' && (
-          <div className="space-y-6">
-            <div className="rounded-2xl bg-gradient-to-r from-emerald-800 to-teal-900 p-6 sm:p-8 text-white shadow-soft-md">
-              <span className="text-xs font-bold uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full">
-                Faculty Portal
-              </span>
-              <h1 className="text-2xl font-bold mt-2">Welcome, {user.name}</h1>
-              <p className="text-emerald-100 text-xs sm:text-sm mt-1">
-                Department of Computer Science &amp; Engineering · Academic Session 2026-27
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-sm">Assigned Classes</CardTitle>
-                  <CardDescription>3 Active Course Sections</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold flex justify-between">
-                    <span>CS304: Database Internals</span>
-                    <span className="text-blue-700 font-mono">Sec A (64 Students)</span>
-                  </div>
-                  <div className="p-2.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold flex justify-between">
-                    <span>CS502: Advanced DBMS</span>
-                    <span className="text-blue-700 font-mono">M.Tech (22 Scholars)</span>
-                  </div>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-sm">Attendance Deficiency Alert</CardTitle>
-                  <CardDescription>Students below 75% cutoff</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-2">
-                  <div className="p-2.5 bg-rose-50 border border-rose-200 rounded-lg text-xs flex justify-between items-center text-rose-800">
-                    <span className="font-bold">3 Students in CS304 Sec A</span>
-                    <Badge variant="danger">Action Required</Badge>
-                  </div>
-                  <p className="text-[11px] text-slate-500">Automated warning notices dispatched via Central AI Support Agent.</p>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader>
-                  <CardTitle className="text-sm">Pending Grading</CardTitle>
-                  <CardDescription>Lab Reports</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-2xl font-black text-slate-900 font-mono">18 Submissions</div>
-                  <p className="text-xs text-slate-500 mt-1">Assignment 2: B+ Tree Query Optimizer</p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+          <FacultyOverview />
         )}
 
         {/* ============================================================== */}
