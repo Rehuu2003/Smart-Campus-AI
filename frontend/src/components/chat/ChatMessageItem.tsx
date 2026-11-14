@@ -15,6 +15,7 @@ import { AGENT_REGISTRY } from '@/types/agent';
 import { useChatStore } from '@/stores/chatStore';
 import { AgentThoughtTrace } from '@/components/agent/AgentThoughtTrace';
 import { AgentAvatar } from '@/components/agent/AgentAvatar';
+import { WidgetDispatcher } from './widgets/WidgetDispatcher';
 import { toast } from 'sonner';
 
 interface ChatMessageItemProps {
@@ -111,6 +112,11 @@ export function ChatMessageItem({ message, onRegenerate }: ChatMessageItemProps)
               <span className="inline-block w-1.5 h-4 ml-1 bg-[#1E3A8A] animate-pulse align-middle" />
             )}
           </div>
+
+          {/* Dynamic Generative UI Widget */}
+          {message.widget && (
+            <WidgetDispatcher widget={message.widget} />
+          )}
 
           {/* Action Footer */}
           <div className="flex items-center justify-between pt-2 border-t border-slate-100 text-[11px] text-slate-400 font-mono">
