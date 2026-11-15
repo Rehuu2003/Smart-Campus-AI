@@ -27,6 +27,7 @@ import { ScheduleTimeline } from '@/components/dashboard/ScheduleTimeline';
 import { PendingTasksList } from '@/components/dashboard/PendingTasksList';
 import { AgentIdentityCard } from '@/components/agent/AgentIdentityCard';
 import { FacultyOverview } from '@/components/faculty/FacultyOverview';
+import { AdminObservabilityCenter } from '@/components/admin/AdminObservabilityCenter';
 import { useChatStream } from '@/hooks/useChatStream';
 import { toast } from 'sonner';
 
@@ -154,67 +155,7 @@ export default function App() {
         {/* ADMIN ROLE VIEW                                               */}
         {/* ============================================================== */}
         {user.role === 'admin' && (
-          <div className="space-y-6">
-            <div className="rounded-2xl bg-gradient-to-r from-amber-700 via-amber-800 to-slate-900 p-6 sm:p-8 text-white shadow-soft-md">
-              <span className="text-xs font-bold uppercase tracking-wider bg-white/20 px-2.5 py-0.5 rounded-full">
-                Administrative Control &amp; AI Telemetry
-              </span>
-              <h1 className="text-2xl font-bold mt-2">Executive Overview · {user.name}</h1>
-              <p className="text-amber-100 text-xs sm:text-sm mt-1">
-                Institutional Operations &amp; Multi-Agent Network Observability
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <Card>
-                <CardHeader className="pb-1">
-                  <span className="text-xs text-slate-500 uppercase font-bold">Total Students</span>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-black text-slate-900 font-mono">
-                    {MOCK_ADMIN_METRICS.totalStudents}
-                  </div>
-                  <span className="text-xs text-emerald-600 font-bold">● Active Enrolled</span>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="pb-1">
-                  <span className="text-xs text-slate-500 uppercase font-bold">Agent Queries Today</span>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-black text-slate-900 font-mono">
-                    {MOCK_ADMIN_METRICS.totalAgentQueriesToday}
-                  </div>
-                  <span className="text-xs text-blue-600 font-bold">+18.4% from yesterday</span>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="pb-1">
-                  <span className="text-xs text-slate-500 uppercase font-bold">Avg Agent Latency</span>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-black text-slate-900 font-mono">
-                    {MOCK_ADMIN_METRICS.systemHealth.averageResponseLatencyMs}ms
-                  </div>
-                  <span className="text-xs text-emerald-600 font-bold">Gemini API Optimized</span>
-                </CardContent>
-              </Card>
-
-              <Card>
-                <CardHeader className="pb-1">
-                  <span className="text-xs text-slate-500 uppercase font-bold">System Uptime</span>
-                </CardHeader>
-                <CardContent>
-                  <div className="text-3xl font-black text-slate-900 font-mono">
-                    {MOCK_ADMIN_METRICS.systemHealth.uptime}
-                  </div>
-                  <span className="text-xs text-emerald-600 font-bold">All 7 Nodes Healthy</span>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
+          <AdminObservabilityCenter />
         )}
 
         {/* Multi-Agent System Registry with Interactive AgentIdentityCards */}
