@@ -8,18 +8,31 @@ import {
   Info,
   ShieldCheck,
   TrendingDown,
-  TrendingUp
+  TrendingUp,
+  RefreshCw
 } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
 import { Button } from '@/components/ui/Button';
 import { MOCK_STUDENT_DATA, SubjectAttendance } from '@/lib/mockData';
+import { TableSkeleton } from '@/components/ui/Skeleton';
+import { playClickTick } from '@/lib/soundEffects';
+import { toast } from 'sonner';
 
 export function AttendanceGauge() {
   const { attendance } = MOCK_STUDENT_DATA;
+  const [isSyncing, setIsSyncing] = useState(false);
   
   // Interactive Simulator State: simulated future missed classes or attended classes
   const [simulatedChange, setSimulatedChange] = useState<number>(0); // negative = missed, positive = attended
+
+  const handleSyncLedger = async () => {
+    playClickTick();
+    setIsSyncing(true);
+    await new Promise((r) => setTimeout(r, 450));
+    setIsSyncing(false);
+    toast.success('Attendance ledger synchronized with university central database!');
+  };
 
   // Calculate simulated overall percentage
   const projectedTotal = attendance.totalConducted + Math.abs(simulatedChange);
@@ -70,15 +83,27 @@ export function AttendanceGauge() {
         <div>
           <CardTitle className="flex items-center gap-2 text-base">
             <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-            Attendance Intelligence & Compliance
+            Attendance Intelligence &amp; Compliance
           </CardTitle>
           <CardDescription>
             Monitored in real-time by the Attendance Agent · Minimum threshold: 75%
           </CardDescription>
         </div>
-        <Badge variant="agent" agentId="attendance" withDot>
-          Verified by Agent
-        </Badge>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            disabled={isSyncing}
+            onClick={handleSyncLedger}
+            aria-label="Synchronize live attendance records"
+            className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 transition cursor-pointer disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+          >
+            <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-blue-600' : 'text-slate-400'}`} />
+            <span className="hidden sm:inline">{isSyncing ? 'Syncing...' : 'Sync Ledger'}</span>
+          </button>
+          <Badge variant="agent" agentId="attendance" withDot>
+            Verified by Agent
+          </Badge>
+        </div>
       </CardHeader>
 
       <CardContent className="p-6 space-y-6">
@@ -231,52 +256,56 @@ export function AttendanceGauge() {
             <span className="text-xs text-slate-400 font-mono">5 Enrolled Courses</span>
           </div>
 
-          <div className="space-y-2.5">
-            {attendance.subjects.map((subj) => (
-              <div
-                key={subj.courseCode}
-                className="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs"
-              >
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="text-xs font-bold font-mono text-[#1E3A8A] bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
-                      {subj.courseCode}
-                    </span>
-                    <span className="text-xs font-bold text-slate-900">
-                      {subj.courseName}
-                    </span>
-                  </div>
-                  <p className="text-[11px] text-slate-500">
-                    Faculty: {subj.professor}
-                  </p>
-                </div>
-
-                <div className="flex items-center justify-between sm:justify-end gap-4 min-w-[240px]">
-                  {/* Progress Bar & Ratio */}
-                  <div className="flex-1 sm:w-32 space-y-1">
-                    <div className="flex justify-between text-[11px] font-mono text-slate-500">
-                      <span>{subj.attended}/{subj.total}</span>
-                      <span className="font-bold text-slate-900">{subj.percentage}%</span>
+          {isSyncing ? (
+            <TableSkeleton rows={4} cols={3} />
+          ) : (
+            <div className="space-y-2.5">
+              {attendance.subjects.map((subj) => (
+                <div
+                  key={subj.courseCode}
+                  className="p-3.5 rounded-xl border border-slate-200 bg-white hover:border-slate-300 transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-2xs"
+                >
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-bold font-mono text-[#1E3A8A] bg-blue-50 px-2 py-0.5 rounded border border-blue-200">
+                        {subj.courseCode}
+                      </span>
+                      <span className="text-xs font-bold text-slate-900">
+                        {subj.courseName}
+                      </span>
                     </div>
-                    <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
-                      <div
-                        className="h-full rounded-full transition-all duration-500"
-                        style={{
-                          width: `${subj.percentage}%`,
-                          backgroundColor: getStatusColor(subj.percentage),
-                        }}
-                      />
-                    </div>
+                    <p className="text-[11px] text-slate-500">
+                      Faculty: {subj.professor}
+                    </p>
                   </div>
 
-                  {/* Status Badge */}
-                  <div className="shrink-0 text-right">
-                    {getSubjectStatusBadge(subj)}
+                  <div className="flex items-center justify-between sm:justify-end gap-4 min-w-[240px]">
+                    {/* Progress Bar & Ratio */}
+                    <div className="flex-1 sm:w-32 space-y-1">
+                      <div className="flex justify-between text-[11px] font-mono text-slate-500">
+                        <span>{subj.attended}/{subj.total}</span>
+                        <span className="font-bold text-slate-900">{subj.percentage}%</span>
+                      </div>
+                      <div className="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+                        <div
+                          className="h-full rounded-full transition-all duration-500"
+                          style={{
+                            width: `${subj.percentage}%`,
+                            backgroundColor: getStatusColor(subj.percentage),
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    {/* Status Badge */}
+                    <div className="shrink-0 text-right">
+                      {getSubjectStatusBadge(subj)}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
 
       </CardContent>
