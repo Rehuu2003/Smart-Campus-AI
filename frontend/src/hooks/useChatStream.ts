@@ -2,6 +2,7 @@ import { useState, useRef, useEffect, useCallback } from 'react';
 import { useChatStore } from '@/stores/chatStore';
 import { ChatMessage, AgentChainStep } from '@/types/chat';
 import { AgentId } from '@/types/agent';
+import { playNotificationSound } from '@/lib/soundEffects';
 
 export function useChatStream() {
   const { messages, addMessage, updateMessageText, setMessageComplete, isStreaming, setIsStreaming } = useChatStore();
@@ -238,6 +239,7 @@ export function useChatStream() {
     }
 
     setMessageComplete(botMsgId);
+    playNotificationSound();
   }, [addMessage, updateMessageText, setMessageComplete, setIsStreaming]);
 
   return {

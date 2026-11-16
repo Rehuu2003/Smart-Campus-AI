@@ -10,13 +10,17 @@ import {
   BookOpen,
   Users,
   Building2,
-  Menu
+  Menu,
+  Volume2,
+  VolumeX
 } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
 import { useAuthStore } from '@/stores/authStore';
 import { UserRole } from '@/types/auth';
+import { isSoundMuted, toggleSound, playClickTick } from '@/lib/soundEffects';
+import { toast } from 'sonner';
 
 interface NavbarProps {
   onOpenCopilot: () => void;
@@ -27,7 +31,19 @@ interface NavbarProps {
 export function Navbar({ onOpenCopilot, onOpenSearch, onToggleMobileMenu }: NavbarProps) {
   const { user, switchRole, logout } = useAuthStore();
   const [profileMenuOpen, setProfileMenuOpen] = useState(false);
+  const [soundMuted, setSoundMuted] = useState(isSoundMuted());
   const menuRef = useRef<HTMLDivElement>(null);
+
+  const handleToggleSound = () => {
+    const newState = toggleSound();
+    setSoundMuted(newState);
+    if (!newState) {
+      playClickTick();
+      toast.success('Sound effects enabled');
+    } else {
+      toast.info('Sound effects muted');
+    }
+  };
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -131,9 +147,25 @@ export function Navbar({ onOpenCopilot, onOpenSearch, onToggleMobileMenu }: Navb
           </kbd>
         </Button>
 
+        {/* Sound Effects Toggle */}
+        <button
+          type="button"
+          onClick={handleToggleSound}
+          aria-label={soundMuted ? 'Unmute interface sound effects' : 'Mute interface sound effects'}
+          className="w-8 h-8 sm:w-9 sm:h-9 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 flex items-center justify-center transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
+          title={soundMuted ? 'Sound Muted (Click to enable)' : 'Sound Enabled (Click to mute)'}
+        >
+          {soundMuted ? (
+            <VolumeX className="w-4 h-4 text-slate-400" />
+          ) : (
+            <Volume2 className="w-4 h-4 text-blue-600" />
+          )}
+        </button>
+
         {/* Notifications Button */}
         <button 
-          className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 flex items-center justify-center transition cursor-pointer"
+          aria-label="View system notifications"
+          className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 flex items-center justify-center transition cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
           title="Notifications"
         >
           <Bell className="w-4 h-4" />

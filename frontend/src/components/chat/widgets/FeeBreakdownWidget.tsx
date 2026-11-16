@@ -15,6 +15,7 @@ import {
 import { FeeWidgetData } from '@/types/chat';
 import confetti from 'canvas-confetti';
 import { toast } from 'sonner';
+import { playSuccessChime } from '@/lib/soundEffects';
 
 interface FeeBreakdownWidgetProps {
   data?: Partial<FeeWidgetData>;
@@ -67,7 +68,8 @@ export function FeeBreakdownWidget({ data }: FeeBreakdownWidgetProps) {
       receiptNumber: `RCP-${Date.now().toString().slice(-6)}`,
     }));
 
-    // Trigger celebration confetti
+    // Play harmonic audio chime & trigger celebration confetti
+    playSuccessChime();
     confetti({
       particleCount: 80,
       spread: 70,
