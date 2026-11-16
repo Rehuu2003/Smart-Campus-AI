@@ -26,6 +26,14 @@ export function AppShell({ children }: AppShellProps) {
 
   return (
     <div className="min-h-screen bg-[#F8FAFC] flex flex-col font-sans text-slate-900 selection:bg-blue-100 selection:text-blue-900">
+      {/* Accessible Skip To Content Link for Screen Readers & Keyboard Navigation */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 z-50 px-4 py-2 bg-[#1E3A8A] text-white font-bold text-xs rounded-xl shadow-soft-lg ring-2 ring-white outline-none transition focus:ring-offset-2"
+      >
+        Skip to main content (Press Enter)
+      </a>
+
       {/* Sonner Toast Notification Provider */}
       <Toaster 
         richColors 
@@ -57,7 +65,13 @@ export function AppShell({ children }: AppShellProps) {
         />
 
         {/* Dynamic Page Content */}
-        <main className="flex-1 overflow-y-auto p-3 sm:p-6 lg:p-8 bg-[#F8FAFC]">
+        <main
+          id="main-content"
+          tabIndex={-1}
+          role="main"
+          aria-label="Main Application Dashboard"
+          className="flex-1 overflow-y-auto p-3 sm:p-6 lg:p-8 bg-[#F8FAFC] focus:outline-none"
+        >
           <div className="max-w-7xl mx-auto">
             {activeTab === 'assistant' ? (
               <FullScreenAssistant onBackToDashboard={() => setActiveTab('dashboard')} />
