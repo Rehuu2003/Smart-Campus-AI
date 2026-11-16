@@ -17,6 +17,7 @@ import { FacultyCourseCard } from './FacultyCourseCard';
 import { BatchAttendanceRoster } from './BatchAttendanceRoster';
 import { AssignmentEvaluationModal } from './AssignmentEvaluationModal';
 import { DeficiencyRiskReport } from './DeficiencyRiskReport';
+import { StaggerContainer, StaggerItem } from '@/components/ui/AnimatedContainer';
 
 type FacultyTab = 'courses' | 'roster' | 'deficiency';
 
@@ -74,46 +75,54 @@ export function FacultyOverview() {
       </div>
 
       {/* Top 4 Faculty Metrics */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          title="Active Courses"
-          value={MOCK_FACULTY_DATA.metrics.activeCourses}
-          subtitle="3 Course Sections Active"
-          badgeText="Active Term"
-          badgeVariant="agent"
-          agentId="coordinator"
-        />
+      <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StaggerItem>
+          <StatCard
+            title="Active Courses"
+            value={MOCK_FACULTY_DATA.metrics.activeCourses}
+            subtitle="3 Course Sections Active"
+            badgeText="Active Term"
+            badgeVariant="agent"
+            agentId="coordinator"
+          />
+        </StaggerItem>
 
-        <StatCard
-          title="Total Students"
-          value={MOCK_FACULTY_DATA.metrics.totalEnrolledStudents}
-          subtitle="Enrolled across sections"
-          badgeText="Enrolled"
-          badgeVariant="agent"
-          agentId="support"
-        />
+        <StaggerItem>
+          <StatCard
+            title="Total Students"
+            value={MOCK_FACULTY_DATA.metrics.totalEnrolledStudents}
+            subtitle="Enrolled across sections"
+            badgeText="Enrolled"
+            badgeVariant="agent"
+            agentId="support"
+          />
+        </StaggerItem>
 
-        <StatCard
-          title="Avg Attendance"
-          value={`${MOCK_FACULTY_DATA.metrics.averageAttendanceAcrossCourses}%`}
-          subtitle="Compliance across classes"
-          badgeText="Healthy"
-          badgeVariant="agent"
-          agentId="attendance"
-          progressValue={MOCK_FACULTY_DATA.metrics.averageAttendanceAcrossCourses}
-          progressColor="bg-emerald-500"
-        />
+        <StaggerItem>
+          <StatCard
+            title="Avg Attendance"
+            value={`${MOCK_FACULTY_DATA.metrics.averageAttendanceAcrossCourses}%`}
+            subtitle="Compliance across classes"
+            badgeText="Healthy"
+            badgeVariant="agent"
+            agentId="attendance"
+            progressValue={MOCK_FACULTY_DATA.metrics.averageAttendanceAcrossCourses}
+            progressColor="bg-emerald-500"
+          />
+        </StaggerItem>
 
-        <StatCard
-          title="Pending Grading"
-          value={MOCK_FACULTY_DATA.metrics.pendingSubmissionsToGrade}
-          subtitle="Raft Consensus Engine Labs"
-          badgeText="Action Needed"
-          badgeVariant="agent"
-          agentId="assignment"
-          trend={{ value: "Lab 4 Due", isPositive: false }}
-        />
-      </div>
+        <StaggerItem>
+          <StatCard
+            title="Pending Grading"
+            value={MOCK_FACULTY_DATA.metrics.pendingSubmissionsToGrade}
+            subtitle="Raft Consensus Engine Labs"
+            badgeText="Action Needed"
+            badgeVariant="agent"
+            agentId="assignment"
+            trend={{ value: "Lab 4 Due", isPositive: false }}
+          />
+        </StaggerItem>
+      </StaggerContainer>
 
       {/* View Navigation Tabs */}
       <div className="flex items-center gap-2 border-b border-slate-200 pb-3">
@@ -169,17 +178,18 @@ export function FacultyOverview() {
             </span>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <StaggerContainer className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {MOCK_FACULTY_DATA.courses.map((course) => (
-              <FacultyCourseCard
-                key={course.code}
-                course={course}
-                onTakeAttendance={handleOpenAttendanceForCourse}
-                onGradeAssignments={handleOpenGradingForCourse}
-                onViewDeficiency={handleOpenDeficiencyForCourse}
-              />
+              <StaggerItem key={course.code}>
+                <FacultyCourseCard
+                  course={course}
+                  onTakeAttendance={handleOpenAttendanceForCourse}
+                  onGradeAssignments={handleOpenGradingForCourse}
+                  onViewDeficiency={handleOpenDeficiencyForCourse}
+                />
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
       )}
 

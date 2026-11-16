@@ -28,7 +28,9 @@ import { PendingTasksList } from '@/components/dashboard/PendingTasksList';
 import { AgentIdentityCard } from '@/components/agent/AgentIdentityCard';
 import { FacultyOverview } from '@/components/faculty/FacultyOverview';
 import { AdminObservabilityCenter } from '@/components/admin/AdminObservabilityCenter';
+import { StaggerContainer, StaggerItem, PageTransition } from '@/components/ui/AnimatedContainer';
 import { useChatStream } from '@/hooks/useChatStream';
+import { playClickTick } from '@/lib/soundEffects';
 import { toast } from 'sonner';
 
 export default function App() {
@@ -36,6 +38,7 @@ export default function App() {
   const { streamResponse } = useChatStream();
 
   const handleTestAgentPrompt = (prompt: string, agentName: string) => {
+    playClickTick();
     toast.info(`Routing inquiry to ${agentName}...`);
     // Open copilot drawer by dispatching Ctrl+J or invoking stream
     const event = new KeyboardEvent('keydown', { key: 'j', ctrlKey: true });
@@ -89,49 +92,57 @@ export default function App() {
             </div>
 
             {/* Top 4 Modular KPI StatCards */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              <StatCard
-                title="Attendance Rate"
-                value={`${MOCK_STUDENT_DATA.attendance.aggregatePercentage}%`}
-                subtitle={`Cutoff: ${MOCK_STUDENT_DATA.attendance.minimumRequired}% · ${MOCK_STUDENT_DATA.attendance.totalAttended}/${MOCK_STUDENT_DATA.attendance.totalConducted} Sessions`}
-                badgeText="Safe Cutoff"
-                badgeVariant="agent"
-                agentId="attendance"
-                progressValue={MOCK_STUDENT_DATA.attendance.aggregatePercentage}
-                progressColor="bg-emerald-500"
-                trend={{ value: `+${MOCK_STUDENT_DATA.attendance.totalSafeMissesOverall} safe misses`, isPositive: true }}
-              />
+            <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              <StaggerItem>
+                <StatCard
+                  title="Attendance Rate"
+                  value={`${MOCK_STUDENT_DATA.attendance.aggregatePercentage}%`}
+                  subtitle={`Cutoff: ${MOCK_STUDENT_DATA.attendance.minimumRequired}% · ${MOCK_STUDENT_DATA.attendance.totalAttended}/${MOCK_STUDENT_DATA.attendance.totalConducted} Sessions`}
+                  badgeText="Safe Cutoff"
+                  badgeVariant="agent"
+                  agentId="attendance"
+                  progressValue={MOCK_STUDENT_DATA.attendance.aggregatePercentage}
+                  progressColor="bg-emerald-500"
+                  trend={{ value: `+${MOCK_STUDENT_DATA.attendance.totalSafeMissesOverall} safe misses`, isPositive: true }}
+                />
+              </StaggerItem>
 
-              <StatCard
-                title="Semester Dues"
-                value={`₹${MOCK_STUDENT_DATA.fees.currentDue.toFixed(2)}`}
-                subtitle="All tuition & hostel charges cleared"
-                badgeText="Paid"
-                badgeVariant="agent"
-                agentId="fee"
-                trend={{ value: "Fall '26", isPositive: true }}
-              />
+              <StaggerItem>
+                <StatCard
+                  title="Semester Dues"
+                  value={`₹${MOCK_STUDENT_DATA.fees.currentDue.toFixed(2)}`}
+                  subtitle="All tuition & hostel charges cleared"
+                  badgeText="Paid"
+                  badgeVariant="agent"
+                  agentId="fee"
+                  trend={{ value: "Fall '26", isPositive: true }}
+                />
+              </StaggerItem>
 
-              <StatCard
-                title="Next Session"
-                value="CS301"
-                subtitle="LH-302 · Prof. R. Sharma (10:00 AM)"
-                badgeText="In 45 mins"
-                badgeVariant="agent"
-                agentId="timetable"
-                trend={{ value: "Room Confirmed", isPositive: true }}
-              />
+              <StaggerItem>
+                <StatCard
+                  title="Next Session"
+                  value="CS301"
+                  subtitle="LH-302 · Prof. R. Sharma (10:00 AM)"
+                  badgeText="In 45 mins"
+                  badgeVariant="agent"
+                  agentId="timetable"
+                  trend={{ value: "Room Confirmed", isPositive: true }}
+                />
+              </StaggerItem>
 
-              <StatCard
-                title="Assignments"
-                value="1 Pending"
-                subtitle="Lab 4: Raft Consensus Engine"
-                badgeText="Due Soon"
-                badgeVariant="agent"
-                agentId="assignment"
-                trend={{ value: "Due Friday", isPositive: false }}
-              />
-            </div>
+              <StaggerItem>
+                <StatCard
+                  title="Assignments"
+                  value="1 Pending"
+                  subtitle="Lab 4: Raft Consensus Engine"
+                  badgeText="Due Soon"
+                  badgeVariant="agent"
+                  agentId="assignment"
+                  trend={{ value: "Due Friday", isPositive: false }}
+                />
+              </StaggerItem>
+            </StaggerContainer>
 
             {/* Attendance Circular Radial Gauge & What-If Simulator */}
             <AttendanceGauge />
@@ -174,15 +185,16 @@ export default function App() {
             </Badge>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+          <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
             {Object.values(AGENT_REGISTRY).map((agent) => (
-              <AgentIdentityCard
-                key={agent.id}
-                agentId={agent.id}
-                onSelectPrompt={(prompt) => handleTestAgentPrompt(prompt, agent.name)}
-              />
+              <StaggerItem key={agent.id}>
+                <AgentIdentityCard
+                  agentId={agent.id}
+                  onSelectPrompt={(prompt) => handleTestAgentPrompt(prompt, agent.name)}
+                />
+              </StaggerItem>
             ))}
-          </div>
+          </StaggerContainer>
         </div>
 
       </div>

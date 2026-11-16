@@ -19,6 +19,7 @@ import { AgentQueryDistribution } from './AgentQueryDistribution';
 import { AgentLatencyMonitor } from './AgentLatencyMonitor';
 import { SystemAuditLogTable } from './SystemAuditLogTable';
 import { BroadcastComposerModal } from './BroadcastComposerModal';
+import { StaggerContainer, StaggerItem } from '@/components/ui/AnimatedContainer';
 
 type AdminTab = 'overview' | 'telemetry' | 'audit' | 'broadcasts';
 
@@ -76,46 +77,54 @@ export function AdminObservabilityCenter() {
       </div>
 
       {/* Top 4 Modular KPI StatCards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard
-          title="Total Students"
-          value={MOCK_ADMIN_METRICS.totalStudents.toLocaleString()}
-          subtitle="Enrolled Across All Programs"
-          badgeText="Active"
-          badgeVariant="agent"
-          agentId="support"
-        />
+      <StaggerContainer className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <StaggerItem>
+          <StatCard
+            title="Total Students"
+            value={MOCK_ADMIN_METRICS.totalStudents.toLocaleString()}
+            subtitle="Enrolled Across All Programs"
+            badgeText="Active"
+            badgeVariant="agent"
+            agentId="support"
+          />
+        </StaggerItem>
 
-        <StatCard
-          title="Queries Today"
-          value={MOCK_ADMIN_METRICS.totalAgentQueriesToday.toLocaleString()}
-          subtitle="Autonomous Intent Resolutions"
-          badgeText="+18.4%"
-          badgeVariant="agent"
-          agentId="coordinator"
-          trend={{ value: "+286 vs yesterday", isPositive: true }}
-        />
+        <StaggerItem>
+          <StatCard
+            title="Queries Today"
+            value={MOCK_ADMIN_METRICS.totalAgentQueriesToday.toLocaleString()}
+            subtitle="Autonomous Intent Resolutions"
+            badgeText="+18.4%"
+            badgeVariant="agent"
+            agentId="coordinator"
+            trend={{ value: "+286 vs yesterday", isPositive: true }}
+          />
+        </StaggerItem>
 
-        <StatCard
-          title="P95 Latency"
-          value={`${MOCK_ADMIN_METRICS.systemHealth.averageResponseLatencyMs}ms`}
-          subtitle="Routing & Database Execution"
-          badgeText="SLO Met"
-          badgeVariant="agent"
-          agentId="attendance"
-          progressValue={24}
-          progressColor="bg-emerald-500"
-        />
+        <StaggerItem>
+          <StatCard
+            title="P95 Latency"
+            value={`${MOCK_ADMIN_METRICS.systemHealth.averageResponseLatencyMs}ms`}
+            subtitle="Routing & Database Execution"
+            badgeText="SLO Met"
+            badgeVariant="agent"
+            agentId="attendance"
+            progressValue={24}
+            progressColor="bg-emerald-500"
+          />
+        </StaggerItem>
 
-        <StatCard
-          title="Cluster Uptime"
-          value={MOCK_ADMIN_METRICS.systemHealth.uptime}
-          subtitle="30-Day Reliability Index"
-          badgeText="Optimal"
-          badgeVariant="agent"
-          agentId="fee"
-        />
-      </div>
+        <StaggerItem>
+          <StatCard
+            title="Cluster Uptime"
+            value={MOCK_ADMIN_METRICS.systemHealth.uptime}
+            subtitle="30-Day Reliability Index"
+            badgeText="Optimal"
+            badgeVariant="agent"
+            agentId="fee"
+          />
+        </StaggerItem>
+      </StaggerContainer>
 
       {/* Tab Navigation */}
       <div className="flex items-center gap-2 border-b border-slate-200 pb-3 overflow-x-auto">
