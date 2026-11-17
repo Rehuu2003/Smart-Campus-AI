@@ -8,6 +8,15 @@ import { FullScreenAssistant } from '@/components/chat/FullScreenAssistant';
 import { CommandMenu } from '@/components/search/CommandMenu';
 import { useChatStream } from '@/hooks/useChatStream';
 
+// Dedicated Views for Sidebar Tabs
+import { AttendanceView } from '@/components/views/AttendanceView';
+import { TimetableView } from '@/components/views/TimetableView';
+import { FeeLedgerView } from '@/components/views/FeeLedgerView';
+import { AssignmentsView } from '@/components/views/AssignmentsView';
+import { ExaminationsView } from '@/components/views/ExaminationsView';
+import { AdminObservabilityCenter } from '@/components/admin/AdminObservabilityCenter';
+import { SettingsView } from '@/components/views/SettingsView';
+
 interface AppShellProps {
   children?: ReactNode;
 }
@@ -22,6 +31,30 @@ export function AppShell({ children }: AppShellProps) {
   const handleCommandSelect = (query: string) => {
     setIsCopilotOpen(true);
     streamResponse(query);
+  };
+
+  const renderActiveContent = () => {
+    switch (activeTab) {
+      case 'assistant':
+        return <FullScreenAssistant onBackToDashboard={() => setActiveTab('dashboard')} />;
+      case 'attendance':
+        return <AttendanceView />;
+      case 'timetable':
+        return <TimetableView />;
+      case 'fees':
+        return <FeeLedgerView />;
+      case 'assignments':
+        return <AssignmentsView />;
+      case 'exams':
+        return <ExaminationsView />;
+      case 'analytics':
+        return <AdminObservabilityCenter />;
+      case 'settings':
+        return <SettingsView />;
+      case 'dashboard':
+      default:
+        return children;
+    }
   };
 
   return (
@@ -73,11 +106,7 @@ export function AppShell({ children }: AppShellProps) {
           className="flex-1 overflow-y-auto p-3 sm:p-6 lg:p-8 bg-[#F8FAFC] focus:outline-none"
         >
           <div className="max-w-7xl mx-auto">
-            {activeTab === 'assistant' ? (
-              <FullScreenAssistant onBackToDashboard={() => setActiveTab('dashboard')} />
-            ) : (
-              children
-            )}
+            {renderActiveContent()}
           </div>
         </main>
       </div>
