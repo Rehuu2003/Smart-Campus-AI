@@ -6,6 +6,7 @@ import {
   Eye, 
   EyeOff, 
   ArrowRight, 
+  ArrowLeft,
   Sparkles, 
   ShieldCheck, 
   Users, 
@@ -17,7 +18,11 @@ import { UserRole } from '@/types/auth';
 import { Button } from '@/components/ui/Button';
 import { AGENT_REGISTRY } from '@/types/agent';
 
-export function LoginScreen() {
+interface LoginScreenProps {
+  onBackToLanding?: () => void;
+}
+
+export function LoginScreen({ onBackToLanding }: LoginScreenProps = {}) {
   const { login, demoLogin, isLoading } = useAuthStore();
   
   const [selectedRole, setSelectedRole] = useState<UserRole>('student');
@@ -54,6 +59,16 @@ export function LoginScreen() {
 
           {/* Top Brand */}
           <div className="relative z-10 space-y-4">
+            {onBackToLanding && (
+              <button
+                type="button"
+                onClick={onBackToLanding}
+                className="inline-flex items-center gap-1.5 text-xs text-blue-200 hover:text-white transition font-semibold pb-1 cursor-pointer"
+              >
+                <ArrowLeft className="w-3.5 h-3.5" />
+                <span>← Back to Landing Page</span>
+              </button>
+            )}
             <div className="flex items-center gap-3">
               <div className="w-11 h-11 rounded-2xl bg-white/10 border border-white/20 backdrop-blur-md flex items-center justify-center text-white shadow-soft-sm">
                 <GraduationCap className="w-6 h-6 text-blue-200" />

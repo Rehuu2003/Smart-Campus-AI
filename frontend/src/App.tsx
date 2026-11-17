@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { 
   Bot, 
   Sparkles, 
@@ -15,6 +16,7 @@ import {
 } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
 import { LoginScreen } from '@/components/auth/LoginScreen';
+import { LandingPage } from '@/components/landing/LandingPage';
 import { AppShell } from '@/components/layout/AppShell';
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card';
 import { Badge } from '@/components/ui/Badge';
@@ -34,8 +36,9 @@ import { playClickTick } from '@/lib/soundEffects';
 import { toast } from 'sonner';
 
 export default function App() {
-  const { user, isAuthenticated } = useAuthStore();
+  const { user, isAuthenticated, demoLogin } = useAuthStore();
   const { streamResponse } = useChatStream();
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   const handleTestAgentPrompt = (prompt: string, agentName: string) => {
     playClickTick();
@@ -46,9 +49,17 @@ export default function App() {
     streamResponse(prompt);
   };
 
-  // If unauthenticated, display the LoginScreen
+  // If unauthenticated, display the LandingPage (or LoginScreen modal if requested)
   if (!isAuthenticated || !user) {
-    return <LoginScreen />;
+    if (showLoginModal) {
+      return <LoginScreen onBackToLanding={() => setShowLoginModal(false)} />;
+    }
+    return (
+      <LandingPage
+        onOpenLogin={() => setShowLoginModal(true)}
+        onDemoLogin={(role) => demoLogin(role)}
+      />
+    );
   }
 
   return (
