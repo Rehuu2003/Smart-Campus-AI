@@ -112,17 +112,17 @@ export function PendingTasksList() {
                     <span className="text-xs font-semibold text-slate-500">
                       {task.courseName}
                     </span>
-                    <span className="text-[10px] font-mono text-slate-400">
+                    <span className="text-[10px] font-mono text-slate-600">
                       Weight: {task.weightagePercent}%
                     </span>
                   </div>
 
-                  <h4 className="text-sm font-bold text-slate-900 leading-snug">
+                  <h3 className="text-sm font-bold text-slate-900 leading-snug">
                     {task.title}
-                  </h4>
+                  </h3>
 
                   <div className="flex items-center gap-2 text-xs">
-                    <Clock className="w-3.5 h-3.5 text-slate-400" />
+                    <Clock className="w-3.5 h-3.5 text-slate-500" />
                     <span className={task.status === 'pending' ? 'text-rose-600 font-semibold' : 'text-slate-500'}>
                       Due: {task.dueDate} at {task.dueTime}
                     </span>

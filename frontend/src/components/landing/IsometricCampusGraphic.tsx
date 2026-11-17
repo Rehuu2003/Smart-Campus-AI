@@ -283,7 +283,7 @@ export function IsometricCampusGraphic() {
           <span className="w-2.5 h-2.5 rounded-full bg-cyan-500 shadow-xs ring-2 ring-white" title="Exam" />
           <span className="w-2.5 h-2.5 rounded-full bg-sky-500 shadow-xs ring-2 ring-white" title="Support" />
         </div>
-        <div className="text-[10px] text-slate-400 font-mono">Median Latency: 22ms</div>
+        <div className="text-[10px] text-slate-600 font-mono">Median Latency: 22ms</div>
       </motion.div>
     </div>
   );

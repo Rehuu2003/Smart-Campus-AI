@@ -97,7 +97,7 @@ export function AttendanceGauge() {
             aria-label="Synchronize live attendance records"
             className="flex items-center gap-1.5 px-2.5 py-1 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-50 hover:bg-slate-100 rounded-lg border border-slate-200 transition cursor-pointer disabled:opacity-60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-600"
           >
-            <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-blue-600' : 'text-slate-400'}`} />
+            <RefreshCw className={`w-3.5 h-3.5 ${isSyncing ? 'animate-spin text-blue-600' : 'text-slate-500'}`} />
             <span className="hidden sm:inline">{isSyncing ? 'Syncing...' : 'Sync Ledger'}</span>
           </button>
           <Badge variant="agent" agentId="attendance" withDot>
@@ -250,10 +250,10 @@ export function AttendanceGauge() {
         {/* Course-by-Course Attendance Breakdown */}
         <div className="space-y-3 pt-2">
           <div className="flex items-center justify-between">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-600">
+            <h3 className="text-xs font-bold uppercase tracking-wider text-slate-700">
               Subject-Wise Breakdown & Cutoff Status
-            </h4>
-            <span className="text-xs text-slate-400 font-mono">5 Enrolled Courses</span>
+            </h3>
+            <span className="text-xs text-slate-600 font-mono">5 Enrolled Courses</span>
           </div>
 
           {isSyncing ? (

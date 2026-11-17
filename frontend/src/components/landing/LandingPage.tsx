@@ -455,7 +455,7 @@ export function LandingPage({ onOpenLogin, onDemoLogin }: LandingPageProps) {
                   {agent.description}
                 </p>
 
-                <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-[10px] text-slate-400 font-mono">
+                <div className="pt-2 border-t border-slate-200/60 flex items-center justify-between text-[10px] text-slate-600 font-mono">
                   <span>Domain: {agent.id.toUpperCase()}</span>
                   <span>Avg: 22ms</span>
                 </div>

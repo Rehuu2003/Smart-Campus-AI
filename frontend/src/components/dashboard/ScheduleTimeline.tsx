@@ -278,9 +278,9 @@ END:VCALENDAR`;
                       <span className="text-xs font-bold font-mono text-purple-800 bg-purple-50 px-2 py-0.5 rounded border border-purple-200">
                         {lecture.courseCode}
                       </span>
-                      <h4 className="text-sm font-bold text-slate-900">
+                      <h3 className="text-sm font-bold text-slate-900">
                         {lecture.courseName}
-                      </h4>
+                      </h3>
                       {isUpcomingFirst && (
                         <span className="text-[10px] font-bold uppercase tracking-wider bg-blue-100 text-blue-800 px-2 py-0.2 rounded-full">
                           Next Up (In 45m)
@@ -290,12 +290,12 @@ END:VCALENDAR`;
 
                     <div className="flex flex-wrap items-center gap-3 text-xs text-slate-500 pt-0.5">
                       <span className="flex items-center gap-1">
-                        <MapPin className="w-3.5 h-3.5 text-slate-400" />
+                        <MapPin className="w-3.5 h-3.5 text-slate-500" />
                         <strong className="text-slate-700">{lecture.location}</strong>
                       </span>
                       <span>•</span>
                       <span className="flex items-center gap-1">
-                        <User className="w-3.5 h-3.5 text-slate-400" />
+                        <User className="w-3.5 h-3.5 text-slate-500" />
                         <span>{lecture.professor}</span>
                       </span>
                     </div>
@@ -311,7 +311,7 @@ END:VCALENDAR`;
                   }`}>
                     {lecture.timeSlot}
                   </span>
-                  <span className="text-[10px] text-slate-400 font-mono mt-1">
+                  <span className="text-[10px] text-slate-600 font-mono mt-1">
                     {lecture.durationMinutes} Minutes Session
                   </span>
                 </div>

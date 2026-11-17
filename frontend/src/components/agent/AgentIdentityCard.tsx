@@ -58,7 +58,7 @@ export function AgentIdentityCard({ agentId, onSelectPrompt }: AgentIdentityCard
           <div className="flex items-center gap-3">
             <AgentAvatar agentId={agentId} size="md" status="online" />
             <div>
-              <CardTitle className="text-sm font-bold text-slate-900 leading-tight">
+              <CardTitle as="h3" className="text-sm font-bold text-slate-900 leading-tight">
                 {meta.name}
               </CardTitle>
               <div className="flex items-center gap-1.5 mt-0.5">
@@ -86,7 +86,7 @@ export function AgentIdentityCard({ agentId, onSelectPrompt }: AgentIdentityCard
       <CardContent className="p-4 pt-0 space-y-3">
         {/* Tool Capabilities */}
         <div className="space-y-1.5">
-          <div className="text-[10px] font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1 font-mono">
+          <div className="text-[10px] font-bold uppercase tracking-wider text-slate-600 flex items-center gap-1 font-mono">
             <Database className="w-3 h-3 text-[#1E3A8A]" />
             Bound Database Tools
           </div>
