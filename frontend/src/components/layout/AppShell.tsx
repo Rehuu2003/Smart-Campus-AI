@@ -1,4 +1,4 @@
-import { useState, ReactNode } from 'react';
+import { useState, useEffect, ReactNode } from 'react';
 import { Toaster } from 'sonner';
 import { Navbar } from './Navbar';
 import { Sidebar } from './Sidebar';
@@ -7,14 +7,27 @@ import { SlideOverDrawer } from '@/components/chat/SlideOverDrawer';
 import { FullScreenAssistant } from '@/components/chat/FullScreenAssistant';
 import { CommandMenu } from '@/components/search/CommandMenu';
 import { useChatStream } from '@/hooks/useChatStream';
+import { useAuthStore } from '@/stores/authStore';
 
-// Dedicated Views for Sidebar Tabs
+// Dedicated Views for Student Role
 import { AttendanceView } from '@/components/views/AttendanceView';
 import { TimetableView } from '@/components/views/TimetableView';
 import { FeeLedgerView } from '@/components/views/FeeLedgerView';
 import { AssignmentsView } from '@/components/views/AssignmentsView';
 import { ExaminationsView } from '@/components/views/ExaminationsView';
+
+// Dedicated Views for Faculty Role
+import { FacultyRosterView } from '@/components/views/FacultyRosterView';
+import { FacultyScheduleView } from '@/components/views/FacultyScheduleView';
+import { FacultyGradingView } from '@/components/views/FacultyGradingView';
+import { FacultyDeficienciesView } from '@/components/views/FacultyDeficienciesView';
+
+// Dedicated Views for Admin Role
 import { AdminObservabilityCenter } from '@/components/admin/AdminObservabilityCenter';
+import { AdminAuditView } from '@/components/views/AdminAuditView';
+import { AdminBroadcastsView } from '@/components/views/AdminBroadcastsView';
+
+// Shared Settings View
 import { SettingsView } from '@/components/views/SettingsView';
 
 interface AppShellProps {
@@ -27,6 +40,22 @@ export function AppShell({ children }: AppShellProps) {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState(false);
   const { streamResponse } = useChatStream();
+  const { user } = useAuthStore();
+  const role = user?.role || 'student';
+
+  // Role-Based Route Guard: Reset to dashboard if activeTab is not permitted for current role
+  useEffect(() => {
+    const allowedTabs: Record<string, string[]> = {
+      student: ['dashboard', 'assistant', 'attendance', 'timetable', 'fees', 'assignments', 'exams', 'settings'],
+      faculty: ['dashboard', 'assistant', 'faculty-roster', 'faculty-schedule', 'faculty-grading', 'faculty-deficiencies', 'settings'],
+      admin: ['dashboard', 'assistant', 'analytics', 'admin-audit', 'admin-broadcasts', 'settings'],
+    };
+
+    const currentAllowed = allowedTabs[role] || allowedTabs.student;
+    if (!currentAllowed.includes(activeTab)) {
+      setActiveTab('dashboard');
+    }
+  }, [role, activeTab]);
 
   const handleCommandSelect = (query: string) => {
     setIsCopilotOpen(true);
@@ -34,27 +63,66 @@ export function AppShell({ children }: AppShellProps) {
   };
 
   const renderActiveContent = () => {
-    switch (activeTab) {
-      case 'assistant':
-        return <FullScreenAssistant onBackToDashboard={() => setActiveTab('dashboard')} />;
-      case 'attendance':
-        return <AttendanceView />;
-      case 'timetable':
-        return <TimetableView />;
-      case 'fees':
-        return <FeeLedgerView />;
-      case 'assignments':
-        return <AssignmentsView />;
-      case 'exams':
-        return <ExaminationsView />;
-      case 'analytics':
-        return <AdminObservabilityCenter />;
-      case 'settings':
-        return <SettingsView />;
-      case 'dashboard':
-      default:
-        return children;
+    // 1. Shared Global Tabs
+    if (activeTab === 'assistant') {
+      return <FullScreenAssistant onBackToDashboard={() => setActiveTab('dashboard')} />;
     }
+    if (activeTab === 'settings') {
+      return <SettingsView />;
+    }
+
+    // 2. Student Role Views (Strictly guarded)
+    if (role === 'student') {
+      switch (activeTab) {
+        case 'attendance':
+          return <AttendanceView />;
+        case 'timetable':
+          return <TimetableView />;
+        case 'fees':
+          return <FeeLedgerView />;
+        case 'assignments':
+          return <AssignmentsView />;
+        case 'exams':
+          return <ExaminationsView />;
+        case 'dashboard':
+        default:
+          return children;
+      }
+    }
+
+    // 3. Faculty Role Views (Strictly guarded)
+    if (role === 'faculty') {
+      switch (activeTab) {
+        case 'faculty-roster':
+          return <FacultyRosterView />;
+        case 'faculty-schedule':
+          return <FacultyScheduleView />;
+        case 'faculty-grading':
+          return <FacultyGradingView />;
+        case 'faculty-deficiencies':
+          return <FacultyDeficienciesView />;
+        case 'dashboard':
+        default:
+          return children;
+      }
+    }
+
+    // 4. Admin Role Views (Strictly guarded)
+    if (role === 'admin') {
+      switch (activeTab) {
+        case 'analytics':
+          return <AdminObservabilityCenter />;
+        case 'admin-audit':
+          return <AdminAuditView />;
+        case 'admin-broadcasts':
+          return <AdminBroadcastsView />;
+        case 'dashboard':
+        default:
+          return children;
+      }
+    }
+
+    return children;
   };
 
   return (

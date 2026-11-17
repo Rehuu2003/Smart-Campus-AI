@@ -13,9 +13,12 @@ import {
   Settings, 
   LogOut, 
   Sparkles,
-  ShieldCheck
+  ShieldCheck,
+  AlertTriangle,
+  Megaphone
 } from 'lucide-react';
 import { useAuthStore } from '@/stores/authStore';
+import { UserRole } from '@/types/auth';
 import { AGENT_REGISTRY } from '@/types/agent';
 import { Avatar } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
@@ -36,6 +39,7 @@ export function MobileNavDrawer({
   onOpenCopilot,
 }: MobileNavDrawerProps) {
   const { user, logout } = useAuthStore();
+  const currentRole = user?.role || 'student';
 
   // Close on Escape key
   useEffect(() => {
@@ -46,17 +50,43 @@ export function MobileNavDrawer({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
-  const navItems = [
-    { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'assistant', label: 'AI Copilot View', icon: Bot, badge: 'Full View' },
-    { id: 'attendance', label: 'Attendance', icon: CheckCircle2, badge: '84.5%' },
-    { id: 'timetable', label: 'Timetable', icon: Calendar, badge: '3 Today' },
-    { id: 'fees', label: 'Fee Ledger', icon: CreditCard },
-    { id: 'assignments', label: 'Assignments', icon: FileText, badge: '1 Due' },
-    { id: 'exams', label: 'Examinations', icon: GraduationCap },
-    { id: 'analytics', label: 'Observability', icon: BarChart3 },
-    { id: 'settings', label: 'Settings', icon: Settings },
-  ];
+  const getNavItems = (role: UserRole) => {
+    switch (role) {
+      case 'faculty':
+        return [
+          { id: 'dashboard', label: 'Faculty Hub', icon: LayoutDashboard },
+          { id: 'assistant', label: 'AI Copilot View', icon: Bot, badge: 'Full' },
+          { id: 'faculty-roster', label: 'Batch Attendance', icon: CheckCircle2, badge: 'Active' },
+          { id: 'faculty-schedule', label: 'Teaching Schedule', icon: Calendar, badge: '3 Classes' },
+          { id: 'faculty-grading', label: 'Assignment Grading', icon: FileText, badge: '18 Due' },
+          { id: 'faculty-deficiencies', label: 'Risk & Deficiencies', icon: AlertTriangle, badge: '3 Alert' },
+          { id: 'settings', label: 'Settings', icon: Settings },
+        ];
+      case 'admin':
+        return [
+          { id: 'dashboard', label: 'Executive Overview', icon: LayoutDashboard },
+          { id: 'assistant', label: 'AI Copilot View', icon: Bot, badge: 'Full' },
+          { id: 'analytics', label: 'Agent Observability', icon: BarChart3, badge: '7 Nodes' },
+          { id: 'admin-audit', label: 'Audit Trail', icon: ShieldCheck },
+          { id: 'admin-broadcasts', label: 'Emergency Alerts', icon: Megaphone, badge: 'Live' },
+          { id: 'settings', label: 'Settings', icon: Settings },
+        ];
+      case 'student':
+      default:
+        return [
+          { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
+          { id: 'assistant', label: 'AI Copilot View', icon: Bot, badge: 'Full' },
+          { id: 'attendance', label: 'Attendance', icon: CheckCircle2, badge: '84.5%' },
+          { id: 'timetable', label: 'Timetable', icon: Calendar, badge: '3 Today' },
+          { id: 'fees', label: 'Fee Ledger', icon: CreditCard },
+          { id: 'assignments', label: 'Assignments', icon: FileText, badge: '1 Due' },
+          { id: 'exams', label: 'Examinations', icon: GraduationCap },
+          { id: 'settings', label: 'Settings', icon: Settings },
+        ];
+    }
+  };
+
+  const navItems = getNavItems(currentRole);
 
   return (
     <AnimatePresence>
