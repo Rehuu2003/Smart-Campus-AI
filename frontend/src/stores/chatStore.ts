@@ -8,6 +8,7 @@ interface ChatStoreState {
   activeQuery: string;
   addMessage: (msg: ChatMessage) => void;
   updateMessageText: (id: string, text: string) => void;
+  updateMessageDetails: (id: string, details: Partial<ChatMessage>) => void;
   setMessageComplete: (id: string) => void;
   setReaction: (id: string, reaction: 'up' | 'down') => void;
   clearMessages: () => void;
@@ -70,6 +71,13 @@ export const useChatStore = create<ChatStoreState>((set) => ({
     set((state) => ({
       messages: state.messages.map((m) =>
         m.id === id ? { ...m, text } : m
+      ),
+    })),
+
+  updateMessageDetails: (id: string, details: Partial<ChatMessage>) =>
+    set((state) => ({
+      messages: state.messages.map((m) =>
+        m.id === id ? { ...m, ...details } : m
       ),
     })),
 

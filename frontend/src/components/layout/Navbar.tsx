@@ -17,6 +17,7 @@ import {
 import { Button } from '@/components/ui/Button';
 import { Avatar } from '@/components/ui/Avatar';
 import { Badge } from '@/components/ui/Badge';
+import { BackendModeBadge } from './BackendModeBadge';
 import { useAuthStore } from '@/stores/authStore';
 import { UserRole } from '@/types/auth';
 import { isSoundMuted, toggleSound, playClickTick } from '@/lib/soundEffects';
@@ -100,6 +101,7 @@ export function Navbar({ onOpenCopilot, onOpenSearch, onToggleMobileMenu }: Navb
             <span className="hidden sm:inline-flex text-[10px] font-bold uppercase tracking-wider bg-blue-50 text-blue-700 border border-blue-200 px-2 py-0.5 rounded-full">
               Enterprise
             </span>
+            <BackendModeBadge />
           </div>
           <p className="text-[11px] text-slate-500 hidden sm:block">Multi-Agent Academic Assistant</p>
         </div>
