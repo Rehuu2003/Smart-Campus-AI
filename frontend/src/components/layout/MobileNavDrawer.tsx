@@ -107,15 +107,48 @@ export function MobileNavDrawer({
 
               {/* User Profile Summary */}
               {user && (
-                <div className="p-3.5 mx-3 mt-3 rounded-xl bg-blue-50/60 border border-blue-200/80 flex items-center gap-3">
-                  <Avatar fallback={user.name.split(' ').map(n => n[0]).join('')} size="sm" status="online" />
-                  <div className="flex-1 truncate">
-                    <div className="text-xs font-bold text-slate-900 truncate">{user.name}</div>
-                    <div className="text-[10px] text-slate-500 font-mono truncate">{user.identifier}</div>
+                <div className="p-3 mx-3 mt-3 rounded-xl bg-blue-50/60 border border-blue-200/80 space-y-2">
+                  <div className="flex items-center gap-2.5">
+                    <Avatar fallback={user.name.split(' ').map(n => n[0]).join('')} size="sm" status="online" />
+                    <div className="flex-1 truncate">
+                      <div className="text-xs font-bold text-slate-900 truncate">{user.name}</div>
+                      <div className="text-[10px] text-slate-500 font-mono truncate">{user.identifier}</div>
+                    </div>
+                    <Badge variant="info" className="text-[9px] px-1.5 py-0 capitalize">
+                      {user.role}
+                    </Badge>
                   </div>
-                  <Badge variant="info" className="text-[9px] px-1.5 py-0 capitalize">
-                    {user.role}
-                  </Badge>
+
+                  {/* 1-Click Role Switcher on Mobile */}
+                  <div className="grid grid-cols-3 gap-1 pt-1.5 border-t border-blue-200/60">
+                    <button
+                      type="button"
+                      onClick={() => useAuthStore.getState().switchRole('student')}
+                      className={`text-[10px] font-bold py-1 rounded transition ${
+                        user.role === 'student' ? 'bg-[#1E3A8A] text-white' : 'bg-white text-slate-700 hover:bg-blue-100'
+                      }`}
+                    >
+                      Student
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => useAuthStore.getState().switchRole('faculty')}
+                      className={`text-[10px] font-bold py-1 rounded transition ${
+                        user.role === 'faculty' ? 'bg-[#1E3A8A] text-white' : 'bg-white text-slate-700 hover:bg-blue-100'
+                      }`}
+                    >
+                      Faculty
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => useAuthStore.getState().switchRole('admin')}
+                      className={`text-[10px] font-bold py-1 rounded transition ${
+                        user.role === 'admin' ? 'bg-[#1E3A8A] text-white' : 'bg-white text-slate-700 hover:bg-blue-100'
+                      }`}
+                    >
+                      Admin
+                    </button>
+                  </div>
                 </div>
               )}
 
