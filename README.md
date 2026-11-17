@@ -161,18 +161,47 @@ The frontend will run locally on `http://localhost:5173`.
 
 ---
 
-## 🗺️ 10-Day Frontend Implementation Roadmap
+## 🗺️ 10-Day Frontend Implementation Roadmap (100% Complete)
 
 - [x] **Day 1:** Project foundation, Stripe Royal Slate design tokens & responsive AppShell with slide-over drawer
 - [x] **Day 2:** Authentication, role-based views (Student/Faculty/Admin) & mock data engine
-- [x] **Day 3:** Student overview dashboard & Recharts attendance gauge
-- [x] **Day 4:** Multi-agent chat shell & non-blocking streaming simulation
-- [x] **Day 5:** Agent reasoning trace accordion & visual breadcrumbs
-- [x] **Day 6:** Generative UI engine (Dynamic attendance, timetable, fee widgets in chat)
-- [x] **Day 7:** Faculty portal & academic records management
-- [x] **Day 8:** Admin agent observability & health telemetry dashboard
-- [x] **Day 9:** Micro-interactions, accessibility audit & skeleton loading states
-- [ ] **Day 10:** Backend integration switch, responsive audit & deployment to Vercel
+- [x] **Day 3:** Student overview dashboard & Recharts attendance gauge with What-If simulator
+- [x] **Day 4:** Multi-agent chat shell & non-blocking streaming simulation with markdown rendering
+- [x] **Day 5:** Agent reasoning trace accordion, raw JSON inspector & latency telemetry status ticker
+- [x] **Day 6:** Generative UI engine (Dynamic attendance, timetable, fee widgets with Razorpay checkout simulation & confetti)
+- [x] **Day 7:** Faculty portal, batch attendance roster, assignment rubric grading drawer & deficiency detector
+- [x] **Day 8:** Admin agent observability, Recharts query distribution donut, node telemetry & emergency broadcast composer
+- [x] **Day 9:** Micro-interactions, Web Audio API procedural sound synthesizer, accessibility audit & zero-layout-shift skeletons
+- [x] **Day 10:** Swappable API client adapter (Mock vs Live SSE backend), manual vendor chunk splitting & Vercel/Netlify deployment configuration
+
+---
+
+## 🔌 Swappable API Client & Live SSE Backend Architecture
+
+The frontend features a swappable API Client adapter (`src/lib/apiClient.ts`):
+* **Autonomous Mock Data Engine:** Zero-dependency, offline-capable mode with simulated character streaming, realistic latency, and full domain data for Student, Faculty, and Admin personas.
+* **Live SSE Backend Mode:** Streams real-time Server-Sent Events from `/api/chat/stream`, updating tokens, multi-agent chain traces, and generative UI widgets on the fly.
+* **Automatic Fallback:** If the live backend is unreachable or returns an error, the client gracefully falls back to the autonomous offline engine with Sonner toast feedback.
+* **1-Click Mode Toggle:** Easily switch between modes via the interactive `BackendModeBadge` pill in the top navigation bar.
+
+---
+
+## 🚢 Deployment Guide
+
+### Deploy to Vercel
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https://github.com/Rehuu2003/Smart-Campus-AI)
+
+1. Import the repository in [Vercel](https://vercel.com).
+2. Set the Root Directory to `frontend`.
+3. Build Command: `npm run build`
+4. Output Directory: `dist`
+5. The included `vercel.json` automatically configures SPA client-side routing rewrites and static asset caching.
+
+### Deploy to Netlify
+1. Connect repository in [Netlify](https://www.netlify.com).
+2. Base directory: `frontend`
+3. Publish directory: `frontend/dist`
+4. The included `netlify.toml` handles routing redirects and security headers.
 
 ---
 
